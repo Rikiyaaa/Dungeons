@@ -25,7 +25,8 @@
   },
   "scripts": {
     "dev": "node --no-warnings index.js",
-    "deploy": "node deploySlash.js guild 1069221189014261791 & node ."
+    "deploy": "node deploySlash.js guild 1069221189014261791 & node .",
+    "push": "git add . & git commit -m \"Update\" & git push origin main"
   },
   "author": "Adivise",
   "license": "MIT",

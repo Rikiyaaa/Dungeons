@@ -21,6 +21,7 @@ client.owner = client.config.OWNER_ID;
 client.dev = client.config.DEV_ID;
 client.color = client.config.EMBED_COLOR;
 client.pendingCommands = {};
+client.message_cache = new Map();
 if(!client.token) client.token = client.config.TOKEN;
 
 

@@ -1,0 +1,43 @@
+{
+  "name": "nanohandler",
+  "version": "1.0.1",
+  "description": "✈ Join Discord: https://discord.gg/4pk97A2 👌",
+  "main": "index.js",
+  "dependencies": {
+    "@fortune-inc/tw-voucher": "^1.0.9",
+    "@napi-rs/canvas": "^0.1.30",
+    "baccarat-engine": "^1.1.5",
+    "canvas": "^2.11.0",
+    "chillout": "^5.0.0",
+    "delay": "^5.0.0",
+    "discord.js": "^14.3.0",
+    "dotenv": "^16.0.3",
+    "figlet": "^1.5.2",
+    "mongoose": "^6.6.3",
+    "node-cron": "^3.0.2",
+    "node-superfetch": "^0.3.3",
+    "path": "^0.12.7",
+    "plsargs": "^0.1.6",
+    "recursive-readdir": "^2.2.2",
+    "settings": "^0.1.1",
+    "slot-machine": "^2.1.0",
+    "stuffs": "^0.1.17"
+  },
+  "scripts": {
+    "dev": "node --no-warnings index.js",
+    "deploy": "node deploySlash.js guild 1069221189014261791 & node ."
+  },
+  "author": "Adivise",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adivise/NanoHandler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Adivise/NanoHandler/issues"
+  },
+  "homepage": "https://github.com/Adivise/NanoHandlereadme",
+  "devDependencies": {
+    "node": "^16.0.1"
+  }
+}

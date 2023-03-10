@@ -1,10 +1,10 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, AttachmentBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const Canvas = require("@napi-rs/canvas");
 const GProfile = require("../../../../../settings/models/profile.js");
-const ItemInv = require("../../../../../settings/models/iteminventory.js");
-const { Page_1, Page_2, Page_3 } = require("../../../../../settings/Item_class/armor_foot/armor_foot_warrior_item.js");
+const GInv = require("../../../../../settings/models/inventory.js");
+const { Page_1, Page_2, Page_3 } = require("../../../../../settings/Item_class/anyomni_upgradet/anyomni_upgradet_human_item.js");
 
-const selectArmor_foot_warrior = async (client, interaction, msg, item) => {
+const selectAnyomni_Upgradet_human = async (client, interaction, msg, item) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const object1 = Object.values(Page_1);
@@ -50,7 +50,7 @@ const selectArmor_foot_warrior = async (client, interaction, msg, item) => {
     const row1 = new ActionRowBuilder()
         .addComponents([
             new StringSelectMenuBuilder()
-                .setCustomId("armor_foot_shop_warrior_1")
+                .setCustomId("anyomni_upgradet_shop_human_1")
                 .setPlaceholder(`Please selection item to buy.`)
                 .setMaxValues(1)
                 .setMinValues(1)
@@ -61,7 +61,7 @@ const selectArmor_foot_warrior = async (client, interaction, msg, item) => {
         const row2 = new ActionRowBuilder()
         .addComponents([    
             new StringSelectMenuBuilder()   
-                .setCustomId("armor_foot_shop_warrior_2")
+                .setCustomId("anyomni_upgradet_shop_human_2")
                 .setPlaceholder(`Please selection item to buy.`)    
                 .setMaxValues(1)    
                 .setMinValues(1)    
@@ -72,7 +72,7 @@ const selectArmor_foot_warrior = async (client, interaction, msg, item) => {
         const row3 = new ActionRowBuilder() 
         .addComponents([    
             new StringSelectMenuBuilder()   
-                .setCustomId("armor_foot_shop_warrior_3")
+                .setCustomId("anyomni_upgradet_shop_human_3")
                 .setPlaceholder(`Please selection item to buy.`)    
                 .setMaxValues(1)
                 .setMinValues(1)
@@ -105,7 +105,7 @@ const selectArmor_foot_warrior = async (client, interaction, msg, item) => {
             ]);
 
     const profile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-    const iteminv = await ItemInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+    const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
     const canvas1 = Canvas.createCanvas(450, 300);
     const ctx1 = canvas1.getContext("2d");
@@ -154,7 +154,7 @@ for (let i = 0; i < attcs.length; i++) {
 
     collector.on('collect', async (menu) => {
         if(menu.isSelectMenu()) {
-            if(menu.customId === "armor_foot_shop_warrior_1") {
+            if(menu.customId === "anyomni_upgradet_shop_human_1") {
                 await menu.deferUpdate();
                 let [ directory ] = menu.values;
 
@@ -162,20 +162,17 @@ for (let i = 0; i < attcs.length; i++) {
 
                 if (profile.money < item.price) return menu.followUp({ content: "You not have money to buy this. Price: " + item.price });
                 if (profile.level < item.level) return menu.followUp({ content: "Requirement Level: " + item.level });
-                if (iteminv.item.length > profile.iteminventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
+                if (inv.item.length > profile.inventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
 
                 profile.money -= item.price;
 
                 const GenID = generateID();
 
-                iteminv.item.push({
+                inv.item.push({
                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
-                    defense: 5,
-                    durability: 100,
-                    level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,
                     id: GenID
@@ -186,10 +183,10 @@ for (let i = 0; i < attcs.length; i++) {
                     .setColor(client.color)
 
                 await profile.save();
-                await iteminv.save();
+                await inv.save();
 
                 await menu.followUp({ embeds: [embed], components: [], files: [] });
-            } else if(menu.customId === "armor_foot_shop_warrior_2") {
+            } else if(menu.customId === "anyomni_upgradet_shop_human_2") {
                 await menu.deferUpdate();
                 let [ directory ] = menu.values;
 
@@ -197,20 +194,17 @@ for (let i = 0; i < attcs.length; i++) {
 
                 if (profile.money < item.price) return menu.followUp({ content: "You not have money to buy this. Price: " + item.price });
                 if (profile.level < item.level) return menu.followUp({ content: "Requirement Level: " + item.level });
-                if (iteminv.item.length > profile.iteminventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
+                if (inv.item.length > profile.inventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
 
                 profile.money -= item.price;
 
                 const GenID = generateID();
 
-                iteminv.item.push({
-                    name: item.name,
+                inv.item.push({
+                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
-                    defense: 5,
-                    durability: 100,
-                    level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,
                     id: GenID
@@ -221,10 +215,10 @@ for (let i = 0; i < attcs.length; i++) {
                     .setColor(client.color)
 
                 await profile.save();
-                await iteminv.save();
+                await inv.save();
 
                 await menu.followUp({ embeds: [embed], components: [], files: [] });
-            } else if(menu.customId === "armor_foot_shop_warrior_3") {
+            } else if(menu.customId === "anyomni_upgradet_shop_human_3") {
                 await menu.deferUpdate();
                 let [ directory ] = menu.values;
 
@@ -232,20 +226,17 @@ for (let i = 0; i < attcs.length; i++) {
 
                 if (profile.money < item.price) return menu.followUp({ content: "You not have money to buy this. Price: " + item.price });
                 if (profile.level < item.level) return menu.followUp({ content: "Requirement Level: " + item.level });
-                if (iteminv.item.length > profile.iteminventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
+                if (inv.item.length > profile.inventory) return menu.followUp({ content: "You backpack is max " + profile.inventory });
 
                 profile.money -= item.price;
 
                 const GenID = generateID();
 
-                iteminv.item.push({
-                    name: item.name,
+                inv.item.push({
+                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
-                    defense: 5,
-                    durability: 100,
-                    level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,
                     id: GenID
@@ -256,7 +247,7 @@ for (let i = 0; i < attcs.length; i++) {
                     .setColor(client.color)
 
                 await profile.save();
-                await iteminv.save();
+                await inv.save();
 
                 await menu.followUp({ embeds: [embed], components: [], files: [] });
             
@@ -315,4 +306,4 @@ function generateID() {
     return crypto.randomBytes(16).toString('base64');
 };
 
-module.exports = { selectArmor_foot_warrior };
+module.exports = { selectAnyomni_Upgradet_human };

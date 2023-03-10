@@ -1,6 +1,7 @@
 const { EmbedBuilder, AttachmentBuilder,ActionRowBuilder,ButtonStyle, ButtonBuilder,ModalBuilder, TextInputBuilder, TextInputStyle ,StringSelectMenuBuilder,SelectMenuOptionBuilder } = require("discord.js");
 const GPet = require("../../settings/models/cradprofile.js");
 const Iteminv = require("../../settings/models/iteminventory.js");
+const GInv = require("../../settings/models/inventory.js");
 const Canvas = require("@napi-rs/canvas");
 
 module.exports = {
@@ -11,6 +12,7 @@ module.exports = {
         await interaction.reply("Loading please wait...");
 
         const pet = await GPet.findOne({ user: interaction.user.id });
+        const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
         const iteminv = await Iteminv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
         //create button1 
@@ -77,48 +79,64 @@ module.exports = {
         const button_change_remove_head = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-            .setCustomId("change_item_head_id")
+            .setCustomId("change_item_armor_head_id")
             .setLabel("Change")
             .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-            .setCustomId("remove_item_head_id")
+            .setCustomId("remove_item_armor_head_id")
             .setLabel("Remove")
+            .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+            .setCustomId("update_item_armor_head_id")
+            .setLabel("Update")
             .setStyle(ButtonStyle.Secondary),
         );
 
         const button_change_remove_body = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-            .setCustomId("change_item_body_id")
+            .setCustomId("change_item_armor_body_id")
             .setLabel("Change")
             .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-            .setCustomId("remove_item_body_id")
+            .setCustomId("remove_item_armor_body_id")
             .setLabel("Remove")
+            .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+            .setCustomId("update_item_armor_body_id")
+            .setLabel("Update")
             .setStyle(ButtonStyle.Secondary),
         );
 
         const button_change_remove_leg = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-            .setCustomId("change_item_leg_id")
+            .setCustomId("change_item_armor_leg_id")
             .setLabel("Change")
             .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-            .setCustomId("remove_item_leg_id")
+            .setCustomId("remove_item_armor_leg_id")
             .setLabel("Remove")
+            .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+            .setCustomId("update_item_armor_leg_id")
+            .setLabel("Update")
             .setStyle(ButtonStyle.Secondary),
         );
 
         const button_change_remove_foot = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-            .setCustomId("change_item_foot_id")
+            .setCustomId("change_item_armor_foot_id")
             .setLabel("Change")
             .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-            .setCustomId("remove_item_foot_id")
+            .setCustomId("remove_item_armor_foot_id")
             .setLabel("Remove")
+            .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+            .setCustomId("update_item_armor_foot_id")
+            .setLabel("Update")
             .setStyle(ButtonStyle.Secondary),
         );
 
@@ -126,6 +144,38 @@ module.exports = {
         .addComponents(
             new ButtonBuilder()
             .setCustomId("go_sword_id")
+            .setLabel("Go Back")
+            .setStyle(ButtonStyle.Secondary),
+        );
+
+        const goarmor_head = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId("go_armor_head_id")
+            .setLabel("Go Back")
+            .setStyle(ButtonStyle.Secondary),
+        );
+
+        const goarmor_body = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId("go_armor_body_id")
+            .setLabel("Go Back")
+            .setStyle(ButtonStyle.Secondary),
+        );
+
+        const goarmor_leg = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId("go_armor_leg_id")
+            .setLabel("Go Back")
+            .setStyle(ButtonStyle.Secondary),
+        );
+
+        const goarmor_foot = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId("go_armor_foot_id")
             .setLabel("Go Back")
             .setStyle(ButtonStyle.Secondary),
         );
@@ -3478,6 +3528,7 @@ module.exports = {
                        
                                                pet.type[0] = {
                                                    type: pet.type[0].type,
+                                                   type_system: pet.type[0].type_system,
                                                    emoji: pet.type[0].emoji,
                                                    sword: {
                                                        name: object[0].name,
@@ -3530,7 +3581,7 @@ module.exports = {
                            } else if (menu.customId == "remove_item_sword_id") {
                                await menu.deferUpdate();
                        
-                               if(pet.type[0].sword.type == "default") return menu.editReply("คุณไม่สามารถลบไอเทมนี้ได้");
+                               if(pet.type[0].sword.status == "default") return menu.followUp({ content: "คุณไม่สามารถลบไอเทมนี้ได้", ephemeral: true});
                        
                                             
                                const button_confirm_cancel = new ActionRowBuilder()
@@ -3557,55 +3608,1996 @@ module.exports = {
                        
                                await menu.editReply({ embeds: [embed], components: [gosword], files: [] });
                            } else if (menu.customId == "cancel_remove_item_sword_id") {
-                               await menu.deferUpdate();
+                            await  menu.deferUpdate();
+                            const embed = new EmbedBuilder()
+                            .setTitle('Sword')
+                            .setFields(
+                                {
+                                    name: "Damage", value: `${pet.type[0].sword.damage_attack}`, inline: false
+                                },
+                                {
+                                    name: "Critical", value: `${pet.type[0].sword.critical}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].sword.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].sword.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+                
+                            await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
+                           } else if (menu.customId == "change_item_armor_head_id") {
+                            await menu.deferUpdate();
+                    
+                            const value = Object.values(iteminv.item);
+                            const object = value.filter(x => x.type === `${pet.type[0].armor_head.type}`);
+                            // if not have food return msg
+                            if(object.length === 0) {
+                                const embed = new EmbedBuilder()
+                                    .setColor(client.color)
+                                    .setDescription(`You don't have any armor head.`)
+                    
+                                return interaction.followUp({ content: " ", embeds: [embed], components: [], ephemeral: true });
+                            }
+                    
+                            const select_armor_head = new ActionRowBuilder()
+                            .addComponents([
+                                new StringSelectMenuBuilder()
+                                    .setCustomId("change_armor_head_human_id")
+                                    .setPlaceholder("Select a armor head.")
+                                    .setOptions(object.map(key => {
+                                        return new SelectMenuOptionBuilder()
+                                            .setLabel(`${toOppositeCase(key.name)}`)
+                                            .setValue(key.id)
+                                        }
+                                    ))
+                                ])
+                    
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Select a armor head to change.")
+                    
+                                await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_head, goarmor_head] });
+                    
+                                let filter = (m) => m.user.id === interaction.user.id;
+                                let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
+                    
+                                collector.on('collect', async (menu) => {
+                                    if(menu.isStringSelectMenu()) {
+                                        if(menu.customId === "change_armor_head_human_id") {
+                                            await menu.deferUpdate();
+                    
+                                            const pet = await GPet.findOne({ user: interaction.user.id});
+                    
+                                            let [ directory ] = menu.values;
+                                            const value = Object.values(iteminv.item);
+                                            const object = value.filter(x => x.id === directory);;
+                    
+                                            const embed = new EmbedBuilder()
+                                            .setDescription("Are you sure you want to change your armor head?")
+                                            .setFields(
+                                                { name: "Sword", value: `${pet.type[0].armor_head.name} -> ${object[0].name}`, inline: false },
+                                                { name: "Status", value: `${pet.type[0].armor_head.status} -> ${object[0].status}`, inline: false },
+                                                { name: "Defense", value: `${pet.type[0].armor_head.defense} -> ${object[0].defense}`, inline: false },
+                                                { name: "Level Upgade", value: `${pet.type[0].armor_head.level_upgade} -> ${object[0].level_upgade}`, inline: false },
+                                            )
+                                            .setColor(client.color)
+                    
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack,
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: object[0].name,
+                                                    emoji: object[0].emoji,
+                                                    status: object[0].status,
+                                                    type: object[0].type,
+                                                    defense: object[0].defense,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense,
+                                                },
+                                            };
+
+                                            await pet.save();
+                        
+                    
+                                            await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_head, goarmor_head] });
+                                        }
+                                    }  
+                                });
+                    
+                           } else if (menu.customId == "remove_item_armor_head_id") {
+                            await menu.deferUpdate();
+                    
+                            if(pet.type[0].armor_head.status == "default") return menu.followUp({ content: "คุณไม่สามารถลบไอเทมนี้ได้", ephemeral: true});
+                    
+                                         
+                            const button_confirm_cancel = new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                .setCustomId("confirm_remove_item_armor_head_id")
+                                .setLabel("Confirm")
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
+                                .setCustomId("cancel_remove_item_armor_head_id")
+                                .setLabel("Cancel")
+                                .setStyle(ButtonStyle.Secondary),
+                            );
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Are you sure you want to remove this item?")
+                    
+                            await menu.editReply({ embeds: [embed], components: [button_confirm_cancel], files: [] });
+                           } else if (menu.customId == "confirm_remove_item_armor_head_id") {
+                            await menu.deferUpdate();
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("You have removed this item.")
+                    
+                            await menu.editReply({ embeds: [embed], components: [goarmor_head], files: [] });
+                           } else if (menu.customId == "cancel_remove_item_armor_head_id") {
+                            await  menu.deferUpdate();
+                            const embed = new EmbedBuilder()
+                            .setTitle('Armor Head')
+                            .setFields(
+                                {
+                                    name: "Defense", value: `${pet.type[0].armor_head.defense}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].armor_head.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].armor_head.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_head, button_back] });
+                           }else if (menu.customId == "change_item_armor_body_id") {
+                            await menu.deferUpdate();
+                    
+                            const value = Object.values(iteminv.item);
+                            const object = value.filter(x => x.type === `${pet.type[0].armor_body.type}`);
+                            // if not have food return msg
+                            if(object.length === 0) {
+                                const embed = new EmbedBuilder()
+                                    .setColor(client.color)
+                                    .setDescription(`You don't have any armor body.`)
+                    
+                                return interaction.followUp({ content: " ", embeds: [embed], components: [], ephemeral: true });
+                            }
+                    
+                            const select_armor_body = new ActionRowBuilder()
+                            .addComponents([
+                                new StringSelectMenuBuilder()
+                                    .setCustomId("change_armor_body_human_id")
+                                    .setPlaceholder("Select a armor body.")
+                                    .setOptions(object.map(key => {
+                                        return new SelectMenuOptionBuilder()
+                                            .setLabel(`${toOppositeCase(key.name)}`)
+                                            .setValue(key.id)
+                                        }
+                                    ))
+                                ])
+                    
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Select a armor body to change.")
+                    
+                                await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_body, goarmor_body] });
+                    
+                                let filter = (m) => m.user.id === interaction.user.id;
+                                let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
+                    
+                                collector.on('collect', async (menu) => {
+                                    if(menu.isStringSelectMenu()) {
+                                        if(menu.customId === "change_armor_body_human_id") {
+                                            await menu.deferUpdate();
+                    
+                                            const pet = await GPet.findOne({ user: interaction.user.id});
+                    
+                                            let [ directory ] = menu.values;
+                                            const value = Object.values(iteminv.item);
+                                            const object = value.filter(x => x.id === directory);;
+                    
+                                            const embed = new EmbedBuilder()
+                                            .setDescription("Are you sure you want to change your armor body?")
+                                            .setFields(
+                                                { name: "Sword", value: `${pet.type[0].armor_body.name} -> ${object[0].name}`, inline: false },
+                                                { name: "Status", value: `${pet.type[0].armor_body.status} -> ${object[0].status}`, inline: false },
+                                                { name: "Defense", value: `${pet.type[0].armor_body.defense} -> ${object[0].defense}`, inline: false },
+                                                { name: "Level Upgade", value: `${pet.type[0].armor_body.level_upgade} -> ${object[0].level_upgade}`, inline: false },
+                                            )
+                                            .setColor(client.color)
+                    
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack,
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                },
+                                                armor_body: {
+                                                    name: object[0].name,
+                                                    emoji: object[0].emoji,
+                                                    status: object[0].status,
+                                                    type: object[0].type,
+                                                    defense: object[0].defense,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense,
+                                                },
+                                            };
+
+                                            await pet.save();
+                        
+                    
+                                            await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_body, goarmor_body] });
+                                        }
+                                    }  
+                                });
+                    
+                           } else if (menu.customId == "remove_item_armor_body_id") {
+                            await menu.deferUpdate();
+                    
+                            if(pet.type[0].armor_body.status == "default") return menu.followUp({ content: "คุณไม่สามารถลบไอเทมนี้ได้", ephemeral: true});
+                    
+                                         
+                            const button_confirm_cancel = new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                .setCustomId("confirm_remove_item_armor_body_id")
+                                .setLabel("Confirm")
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
+                                .setCustomId("cancel_remove_item_armor_body_id")
+                                .setLabel("Cancel")
+                                .setStyle(ButtonStyle.Secondary),
+                            );
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Are you sure you want to remove this item?")
+                    
+                            await menu.editReply({ embeds: [embed], components: [button_confirm_cancel], files: [] });
+                           } else if (menu.customId == "confirm_remove_item_armor_body_id") {
+                            await menu.deferUpdate();
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("You have removed this item.")
+                    
+                            await menu.editReply({ embeds: [embed], components: [goarmor_body], files: [] });
+                           } else if (menu.customId == "cancel_remove_item_armor_body_id") {
+                            await  menu.deferUpdate();
+                            const embed = new EmbedBuilder()
+                            .setTitle('Armor Body')
+                            .setFields(
+                                {
+                                    name: "Defense", value: `${pet.type[0].armor_body.defense}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].armor_body.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+
+                   
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_body, button_back] });
+                           } else if (menu.customId == "change_item_armor_leg_id") {
+                            await menu.deferUpdate();
+                    
+                            const value = Object.values(iteminv.item);
+                            const object = value.filter(x => x.type === `${pet.type[0].armor_leg.type}`);
+                            // if not have food return msg
+                            if(object.length === 0) {
+                                const embed = new EmbedBuilder()
+                                    .setColor(client.color)
+                                    .setDescription(`You don't have any armor leg.`)
+                    
+                                return interaction.followUp({ content: " ", embeds: [embed], components: [], ephemeral: true });
+                            }
+                    
+                            const select_armor_leg = new ActionRowBuilder()
+                            .addComponents([
+                                new StringSelectMenuBuilder()
+                                    .setCustomId("change_armor_leg_human_id")
+                                    .setPlaceholder("Select a armor leg.")
+                                    .setOptions(object.map(key => {
+                                        return new SelectMenuOptionBuilder()
+                                            .setLabel(`${toOppositeCase(key.name)}`)
+                                            .setValue(key.id)
+                                        }
+                                    ))
+                                ])
+                    
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Select a armor leg to change.")
+                    
+                                await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_leg, goarmor_leg] });
+                    
+                                let filter = (m) => m.user.id === interaction.user.id;
+                                let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
+                    
+                                collector.on('collect', async (menu) => {
+                                    if(menu.isStringSelectMenu()) {
+                                        if(menu.customId === "change_armor_leg_human_id") {
+                                            await menu.deferUpdate();
+                    
+                                            const pet = await GPet.findOne({ user: interaction.user.id});
+                    
+                                            let [ directory ] = menu.values;
+                                            const value = Object.values(iteminv.item);
+                                            const object = value.filter(x => x.id === directory);;
+                    
+                                            const embed = new EmbedBuilder()
+                                            .setDescription("Are you sure you want to change your armor leg?")
+                                            .setFields(
+                                                { name: "Sword", value: `${pet.type[0].armor_leg.name} -> ${object[0].name}`, inline: false },
+                                                { name: "Status", value: `${pet.type[0].armor_leg.status} -> ${object[0].status}`, inline: false },
+                                                { name: "Defense", value: `${pet.type[0].armor_leg.defense} -> ${object[0].defense}`, inline: false },
+                                                { name: "Level Upgade", value: `${pet.type[0].armor_leg.level_upgade} -> ${object[0].level_upgade}`, inline: false },
+                                            )
+                                            .setColor(client.color)
+                    
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack,
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense,
+                                                },
+                                                armor_leg: {
+                                                    name: object[0].name,
+                                                    emoji: object[0].emoji,
+                                                    status: object[0].status,
+                                                    type: object[0].type,
+                                                    defense: object[0].defense,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense,
+                                                },
+                                            };
+
+                                            await pet.save();
+                        
+                    
+                                            await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_leg, goarmor_leg] });
+                                        }
+                                    }  
+                                });
+                    
+                           } else if (menu.customId == "remove_item_armor_leg_id") {
+                            await menu.deferUpdate();
+                    
+                            if(pet.type[0].armor_leg.status == "default") return menu.followUp({ content: "คุณไม่สามารถลบไอเทมนี้ได้", ephemeral: true});
+                    
+                                         
+                            const button_confirm_cancel = new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                .setCustomId("confirm_remove_item_armor_leg_id")
+                                .setLabel("Confirm")
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
+                                .setCustomId("cancel_remove_item_armor_leg_id")
+                                .setLabel("Cancel")
+                                .setStyle(ButtonStyle.Secondary),
+                            );
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Are you sure you want to remove this item?")
+                    
+                            await menu.editReply({ embeds: [embed], components: [button_confirm_cancel], files: [] });
+                           } else if (menu.customId == "confirm_remove_item_armor_leg_id") {
+                            await menu.deferUpdate();
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("You have removed this item.")
+                    
+                            await menu.editReply({ embeds: [embed], components: [goarmor_leg], files: [] });
+                           } else if (menu.customId == "cancel_remove_item_armor_leg_id") {
+                            await  menu.deferUpdate();
+                            const embed = new EmbedBuilder()
+                            .setTitle('Armor Leg')
+                            .setFields(
+                                {
+                                    name: "Defense", value: `${pet.type[0].armor_leg.defense}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].armor_leg.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+
+                   
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_leg, button_back] });
+                           }else if (menu.customId == "change_item_armor_foot_id") {
+                            await menu.deferUpdate();
+                    
+                            const value = Object.values(iteminv.item);
+                            const object = value.filter(x => x.type === `${pet.type[0].armor_foot.type}`);
+                            // if not have food return msg
+                            if(object.length === 0) {
+                                const embed = new EmbedBuilder()
+                                    .setColor(client.color)
+                                    .setDescription(`You don't have any armor foot.`)
+                    
+                                return interaction.followUp({ content: " ", embeds: [embed], components: [], ephemeral: true });
+                            }
+                    
+                            const select_armor_foot = new ActionRowBuilder()
+                            .addComponents([
+                                new StringSelectMenuBuilder()
+                                    .setCustomId("change_armor_foot_human_id")
+                                    .setPlaceholder("Select a armor foot.")
+                                    .setOptions(object.map(key => {
+                                        return new SelectMenuOptionBuilder()
+                                            .setLabel(`${toOppositeCase(key.name)}`)
+                                            .setValue(key.id)
+                                        }
+                                    ))
+                                ])
+                    
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Select a armor foot to change.")
+                    
+                                await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_foot, goarmor_foot] });
+                    
+                                let filter = (m) => m.user.id === interaction.user.id;
+                                let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
+                    
+                                collector.on('collect', async (menu) => {
+                                    if(menu.isStringSelectMenu()) {
+                                        if(menu.customId === "change_armor_foot_human_id") {
+                                            await menu.deferUpdate();
+                    
+                                            const pet = await GPet.findOne({ user: interaction.user.id});
+                    
+                                            let [ directory ] = menu.values;
+                                            const value = Object.values(iteminv.item);
+                                            const object = value.filter(x => x.id === directory);;
+                    
+                                            const embed = new EmbedBuilder()
+                                            .setDescription("Are you sure you want to change your armor foot?")
+                                            .setFields(
+                                                { name: "Sword", value: `${pet.type[0].armor_foot.name} -> ${object[0].name}`, inline: false },
+                                                { name: "Status", value: `${pet.type[0].armor_foot.status} -> ${object[0].status}`, inline: false },
+                                                { name: "Defense", value: `${pet.type[0].armor_foot.defense} -> ${object[0].defense}`, inline: false },
+                                                { name: "Level Upgade", value: `${pet.type[0].armor_foot.level_upgade} -> ${object[0].level_upgade}`, inline: false },
+                                            )
+                                            .setColor(client.color)
+                    
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack,
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense,
+                                                },
+                                                armor_foot: {
+                                                    name: object[0].name,
+                                                    emoji: object[0].emoji,
+                                                    status: object[0].status,
+                                                    type: object[0].type,
+                                                    defense: object[0].defense,
+                                                },
+                                            };
+
+                                            await pet.save();
+                        
+                    
+                                            await menu.editReply({ content: " ", embeds: [embed], components: [select_armor_foot, goarmor_foot] });
+                                        }
+                                    }  
+                                });
+                    
+                           } else if (menu.customId == "remove_item_armor_foot_id") {
+                            await menu.deferUpdate();
+                    
+                            if(pet.type[0].armor_foot.status == "default") return menu.followUp({ content: "คุณไม่สามารถลบไอเทมนี้ได้", ephemeral: true});
+                    
+                                         
+                            const button_confirm_cancel = new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                .setCustomId("confirm_remove_item_armor_foot_id")
+                                .setLabel("Confirm")
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
+                                .setCustomId("cancel_remove_item_armor_foot_id")
+                                .setLabel("Cancel")
+                                .setStyle(ButtonStyle.Secondary),
+                            );
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("Are you sure you want to remove this item?")
+                    
+                            await menu.editReply({ embeds: [embed], components: [button_confirm_cancel], files: [] });
+                           } else if (menu.customId == "confirm_remove_item_armor_foot_id") {
+                            await menu.deferUpdate();
+                    
+                            const embed = new EmbedBuilder()
+                            .setDescription("You have removed this item.")
+                    
+                            await menu.editReply({ embeds: [embed], components: [goarmor_foot], files: [] });
+                           } else if (menu.customId == "cancel_remove_item_armor_foot_id") {
+                            await  menu.deferUpdate();
+                                    const embed = new EmbedBuilder()
+                                    .setTitle('Armor Foot')
+                                    .setFields(
+                                        {
+                                            name: "Defense", value: `${pet.type[0].armor_foot.defense}`, inline: false
+                                        },
+                                        {
+                                            name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                        },
+                                        {
+                                            name: "Level", value: `${pet.type[0].armor_foot.level_upgade}`, inline: false
+                                        }
+                                    )
+                                    .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                    .setColor(client.color)
+    
                        
-                               // Go Sword Page
-                       
-                               if(pet.type[0].sword.type == "default") return menu.editReply("คุณไม่สามารถลบไอเทมนี้ได้");
-                       
-                               const embed = new EmbedBuilder()
-                               .setTitle('Sword')
-                               .setFields(
-                                   {
-                                       name: "Damage", value: "10/10", inline: false
-                                   },
-                                   {
-                                       name: "Critical", value: "100/100", inline: false
-                                   },
-                                   {
-                                       name: "Durability", value: "100/100", inline: false
-                                   },
-                               )
-                               .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
-                               .setColor(client.color)
-                       
-                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_foot, button_back] });
                            } else if (menu.customId == "go_sword_id") {
-                               await menu.deferUpdate();
+                            await  menu.deferUpdate();
+
+                            const pet = await GPet.findOne({ user: interaction.user.id });
+
+                            const embed = new EmbedBuilder()
+                            .setTitle('Sword')
+                            .setFields(
+                                {
+                                    name: "Damage", value: `${pet.type[0].sword.damage_attack}`, inline: false
+                                },
+                                {
+                                    name: "Critical", value: `${pet.type[0].sword.critical}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].sword.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].sword.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+                
+                            await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
+                           } else if (menu.customId == "go_armor_head_id") {
+                            await  menu.deferUpdate();
+
+                            const pet = await GPet.findOne({ user: interaction.user.id });
+
+                            const embed = new EmbedBuilder()
+                            .setTitle('Armor Head')
+                            .setFields(
+                                {
+                                    name: "Defense", value: `${pet.type[0].armor_head.defense}`, inline: false
+                                },
+                                {
+                                        name: "Durability", value: `${pet.type[0].armor_head.durability}`, inline: false
+                                    },
+                                {
+                                    name: "Level", value: `${pet.type[0].armor_head.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_head, button_back] });
+                           } else if (menu.customId == "go_armor_body_id") {
+                            await  menu.deferUpdate();
+
+                            const pet = await GPet.findOne({ user: interaction.user.id });
+                            
+                            const embed = new EmbedBuilder()
+                            .setTitle('Armor Body')
+                            .setFields(
+                                {
+                                    name: "Defense", value: `${pet.type[0].armor_body.defense}`, inline: false
+                                },
+                                {
+                                    name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                },
+                                {
+                                    name: "Level", value: `${pet.type[0].armor_body.level_upgade}`, inline: false
+                                }
+                            )
+                            .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                            .setColor(client.color)
+
+                   
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_body, button_back] });
+                            } else if (menu.customId == "go_armor_leg_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+                                
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Leg')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_leg.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_leg.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
                        
-                               // Go Sword Page
-                       
-                               if(pet.type[0].sword.type == "default") return menu.editReply("คุณไม่สามารถลบไอเทมนี้ได้");
-                       
-                                            
-                               const embed = new EmbedBuilder()
-                               .setTitle('Sword')
-                               .setFields(
-                                   {
-                                       name: "Damage", value: "10/10", inline: false
-                                   },
-                                   {
-                                       name: "Critical", value: "100/100", inline: false
-                                   },
-                                   {
-                                       name: "Durability", value: "100/100", inline: false
-                                   },
-                               )
-                               .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
-                               .setColor(client.color)
-                       
-                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
-                           }
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_leg, button_back] });
+                            } else if (menu.customId == "go_armor_foot_id") {
+                                await  menu.deferUpdate();
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Foot')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_foot.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_foot.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
+                   
+                               await menu.editReply({ embeds: [embed], components: [select, button_change_remove_foot, button_back] });
+                            } else if (menu.customId == "update_item_sword_id") {
+                                await menu.deferUpdate();
+                                const button_sword_ug = new ActionRowBuilder()
+                                .addComponents(
+                                    new ButtonBuilder()
+                                    .setCustomId("confirm_sword_id")
+                                    .setLabel("Confirm")
+                                    .setStyle(ButtonStyle.Secondary),
+                                    new ButtonBuilder()
+                                    .setCustomId("cancel_sword_id")
+                                    .setLabel("Cancel")
+                                    .setStyle(ButtonStyle.Secondary),
+                                );
+
+                                const embed = new EmbedBuilder()
+                                .setDescription("Are you sure you want to upgrade your sword?")
+
+                                await menu.editReply({ embeds: [embed], components: [button_sword_ug], files: [] });
+                                    
+
+                            } else if (menu.customId == "confirm_sword_id") {
+                                await menu.deferUpdate();
+
+                                const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const item = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`);
+                                const item_length = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`).length;
+
+                                if(item) {
+                                    if(item_length >= 1) {
+                                        for (let i = 0; i < 1; i++) {
+                                            const index = inv.item.indexOf(item[i]);
+                                            if (index > -1) {
+                                                inv.item.splice(index, 1);
+                                            }
+                                        }
+
+                                        // random string 
+                                        const true_false = ["+", "-"]
+                                        const random_true_false = true_false[Math.floor(Math.random() * true_false.length)];
+                                        console.log(random_true_false)
+
+                                        if(random_true_false == "+"){
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack += 15, 
+                                                    critical: pet.type[0].sword.critical += 5,
+                                                    durability: pet.type[0].sword.durability += 5,
+                                                    level_upgade: pet.type[0].sword.level_upgade +=1,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense,
+                                                },
+                                            };
+                                        } else if(random_true_false == "-"){
+                                            if (pet.type[0].sword.level_upgade <= 0 || pet.type[0].sword.damage_attack <= 0 || pet.type[0].sword.critical <= 0 || pet.type[0].sword.durability <= 0) {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: 0,
+                                                        critical: 0,
+                                                        durability: 0,
+                                                        level_upgade: 1,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense,
+                                                    },
+                                                };
+                                            } else {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack -= 15, 
+                                                        critical: pet.type[0].sword.critical -= 5,
+                                                        durability: pet.type[0].sword.durability -= 5,
+                                                        level_upgade: pet.type[0].sword.level_upgade -=1,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense,
+                                                    },
+                                                }
+                                            }
+                                        }
+                                        await inv.save();
+                                        await pet.save();
+                                        const loading = new EmbedBuilder()
+                                        .setDescription("Loading...")
+                                        .setColor(client.color)
+        
+                                        await menu.editReply({ embeds: [loading], components: [], files: [] });
+                                        await new Promise(r => setTimeout(r, 5000));
+                                        const embed = new EmbedBuilder()
+                                        .setDescription("You have successfully upgraded your sword!")
+                                        await menu.editReply({ embeds: [embed], components: [gosword], files: [] });
+                                    } else {
+                                        const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [gosword], files: [] });
+                                    }
+                                }  else {
+                                    const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [gosword], files: [] });
+                                }
+
+                            } else if (menu.customId == "cancel_sword_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const embed = new EmbedBuilder()
+                                .setTitle('Sword')
+                                .setFields(
+                                    {
+                                        name: "Damage", value: `${pet.type[0].sword.damage_attack}`, inline: false
+                                    },
+                                    {
+                                        name: "Critical", value: `${pet.type[0].sword.critical}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].sword.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].sword.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+                    
+                                await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
+                            } else if (menu.customId == "update_item_armor_head_id") {
+                                await menu.deferUpdate();
+                                const button_sword_ug = new ActionRowBuilder()
+                                .addComponents(
+                                    new ButtonBuilder()
+                                    .setCustomId("confirm_armor_head_id")
+                                    .setLabel("Confirm")
+                                    .setStyle(ButtonStyle.Secondary),
+                                    new ButtonBuilder()
+                                    .setCustomId("cancel_armor_head_id")
+                                    .setLabel("Cancel")
+                                    .setStyle(ButtonStyle.Secondary),
+                                );
+
+                                const embed = new EmbedBuilder()
+                                .setDescription("Are you sure you want to upgrade your armor_head?")
+
+                                await menu.editReply({ embeds: [embed], components: [button_sword_ug], files: [] });
+                                    
+
+                            } else if (menu.customId == "confirm_armor_head_id") {
+                                await menu.deferUpdate();
+
+                                const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const item = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`);
+                                const item_length = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`).length;
+
+                                if(item) {
+                                    if(item_length >= 1) {
+                                        for (let i = 0; i < 1; i++) {
+                                            const index = inv.item.indexOf(item[i]);
+                                            if (index > -1) {
+                                                inv.item.splice(index, 1);
+                                            }
+                                        }
+
+                                        // random string 
+                                        const true_false = ["+", "-"]
+                                        const random_true_false = true_false[Math.floor(Math.random() * true_false.length)];
+                                        console.log(random_true_false)
+
+                                        if(random_true_false == "+"){
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack , 
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability ,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense += 15,
+                                                    durability: pet.type[0].armor_head.durability += 5,
+                                                    level_upgade: pet.type[0].armor_head.level_upgade +=1,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense ,
+                                                    durability: pet.type[0].armor_body.durability ,
+                                                    level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense ,
+                                                    durability: pet.type[0].armor_leg.durability ,
+                                                    level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense ,
+                                                    durability: pet.type[0].armor_foot.durability ,
+                                                    level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                },
+                                            };
+                                        } else if(random_true_false == "-"){
+                                            if (pet.type[0].armor_head.level_upgade <= 0 || pet.type[0].armor_head.defense <= 0 || pet.type[0].armor_head.durability <= 0 ) {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: 0,
+                                                        durability: 0,
+                                                        level_upgade: 1,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            } else {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense -= 15,
+                                                        durability: pet.type[0].armor_head.durability -= 5,
+                                                        level_upgade: pet.type[0].armor_head.level_upgade -=1,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            }
+                                        }
+                                        await inv.save();
+                                        await pet.save();
+                                        const loading = new EmbedBuilder()
+                                        .setDescription("Loading...")
+                                        .setColor(client.color)
+        
+                                        await menu.editReply({ embeds: [loading], components: [], files: [] });
+                                        await new Promise(r => setTimeout(r, 5000));
+                                        const embed = new EmbedBuilder()
+                                        .setDescription("You have successfully upgraded your sword!")
+                                        await menu.editReply({ embeds: [embed], components: [goarmor_head], files: [] });
+                                    } else {
+                                        const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_head], files: [] });
+                                    }
+                                }  else {
+                                    const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_head], files: [] });
+                                }
+
+                            } else if (menu.customId == "cancel_armor_head_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Head')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_head.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_head.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_head.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_head, button_back] });
+                            } else if (menu.customId == "update_item_armor_body_id") {
+                                await menu.deferUpdate();
+                                const button_sword_ug = new ActionRowBuilder()
+                                .addComponents(
+                                    new ButtonBuilder()
+                                    .setCustomId("confirm_armor_body_id")
+                                    .setLabel("Confirm")
+                                    .setStyle(ButtonStyle.Secondary),
+                                    new ButtonBuilder()
+                                    .setCustomId("cancel_armor_body_id")
+                                    .setLabel("Cancel")
+                                    .setStyle(ButtonStyle.Secondary),
+                                );
+
+                                const embed = new EmbedBuilder()
+                                .setDescription("Are you sure you want to upgrade your armor_body?")
+
+                                await menu.editReply({ embeds: [embed], components: [button_sword_ug], files: [] });
+                                    
+
+                            } else if (menu.customId == "confirm_armor_body_id") {
+                                await menu.deferUpdate();
+
+                                const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const item = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`);
+                                const item_length = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`).length;
+
+                                if(item) {
+                                    if(item_length >= 1) {
+                                        for (let i = 0; i < 1; i++) {
+                                            const index = inv.item.indexOf(item[i]);
+                                            if (index > -1) {
+                                                inv.item.splice(index, 1);
+                                            }
+                                        }
+
+                                        // random string 
+                                        const true_false = ["+", "-"]
+                                        const random_true_false = true_false[Math.floor(Math.random() * true_false.length)];
+                                        console.log(random_true_false)
+
+                                        if(random_true_false == "+"){
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack , 
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability ,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                    durability: pet.type[0].armor_head.durability ,
+                                                    level_upgade: pet.type[0].armor_head.level_upgade,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense += 15,
+                                                    durability: pet.type[0].armor_body.durability += 5,
+                                                    level_upgade: pet.type[0].armor_body.level_upgade +=1,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense ,
+                                                    durability: pet.type[0].armor_leg.durability ,
+                                                    level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense ,
+                                                    durability: pet.type[0].armor_foot.durability ,
+                                                    level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                },
+                                            };
+                                        } else if(random_true_false == "-"){
+                                            if (pet.type[0].armor_body.level_upgade <= 0 || pet.type[0].armor_body.defense <= 0 || pet.type[0].armor_body.durability <= 0 ) {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: 0,
+                                                        durability: 0,
+                                                        level_upgade: 1,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            } else {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense ,
+                                                        durability: pet.type[0].armor_head.durability ,
+                                                        level_upgade: pet.type[0].armor_head.level_upgade,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense -= 15,
+                                                        durability: pet.type[0].armor_body.durability -= 5,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade -=1,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            }
+                                        }
+                                        await inv.save();
+                                        await pet.save();
+                                        const loading = new EmbedBuilder()
+                                        .setDescription("Loading...")
+                                        .setColor(client.color)
+        
+                                        await menu.editReply({ embeds: [loading], components: [], files: [] });
+                                        await new Promise(r => setTimeout(r, 5000));
+                                        const embed = new EmbedBuilder()
+                                        .setDescription("You have successfully upgraded your sword!")
+                                        await menu.editReply({ embeds: [embed], components: [goarmor_body], files: [] });
+                                    } else {
+                                        const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_body], files: [] });
+                                    }
+                                }  else {
+                                    const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_body], files: [] });
+                                }
+
+                            } else if (menu.customId == "cancel_armor_body_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Body')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_body.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_body.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_body.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_body, button_back] });
+                            } else if (menu.customId == "update_item_armor_leg_id") {
+                                await menu.deferUpdate();
+                                const button_sword_ug = new ActionRowBuilder()
+                                .addComponents(
+                                    new ButtonBuilder()
+                                    .setCustomId("confirm_armor_leg_id")
+                                    .setLabel("Confirm")
+                                    .setStyle(ButtonStyle.Secondary),
+                                    new ButtonBuilder()
+                                    .setCustomId("cancel_armor_leg_id")
+                                    .setLabel("Cancel")
+                                    .setStyle(ButtonStyle.Secondary),
+                                );
+
+                                const embed = new EmbedBuilder()
+                                .setDescription("Are you sure you want to upgrade your armor_leg?")
+
+                                await menu.editReply({ embeds: [embed], components: [button_sword_ug], files: [] });
+                                    
+
+                            } else if (menu.customId == "confirm_armor_leg_id") {
+                                await menu.deferUpdate();
+
+                                const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const item = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`);
+                                const item_length = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`).length;
+
+                                if(item) {
+                                    if(item_length >= 1) {
+                                        for (let i = 0; i < 1; i++) {
+                                            const index = inv.item.indexOf(item[i]);
+                                            if (index > -1) {
+                                                inv.item.splice(index, 1);
+                                            }
+                                        }
+
+                                        // random string 
+                                        const true_false = ["+", "-"]
+                                        const random_true_false = true_false[Math.floor(Math.random() * true_false.length)];
+                                        console.log(random_true_false)
+
+                                        if(random_true_false == "+"){
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack , 
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability ,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                    durability: pet.type[0].armor_head.durability ,
+                                                    level_upgade: pet.type[0].armor_head.level_upgade,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense ,
+                                                    durability: pet.type[0].armor_body.durability ,
+                                                    level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense += 15,
+                                                    durability: pet.type[0].armor_leg.durability += 5,
+                                                    level_upgade: pet.type[0].armor_leg.level_upgade +=1,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense ,
+                                                    durability: pet.type[0].armor_foot.durability ,
+                                                    level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                },
+                                            };
+                                        } else if(random_true_false == "-"){
+                                            if (pet.type[0].armor_leg.level_upgade <= 0 || pet.type[0].armor_leg.defense <= 0 || pet.type[0].armor_leg.durability <= 0 ) {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: 0,
+                                                        durability: 0,
+                                                        level_upgade: 1,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            } else {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense ,
+                                                        durability: pet.type[0].armor_head.durability ,
+                                                        level_upgade: pet.type[0].armor_head.level_upgade,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense -= 15,
+                                                        durability: pet.type[0].armor_leg.durability -= 5,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade -=1,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            }
+                                        }
+                                        await inv.save();
+                                        await pet.save();
+                                        const loading = new EmbedBuilder()
+                                        .setDescription("Loading...")
+                                        .setColor(client.color)
+        
+                                        await menu.editReply({ embeds: [loading], components: [], files: [] });
+                                        await new Promise(r => setTimeout(r, 5000));
+                                        const embed = new EmbedBuilder()
+                                        .setDescription("You have successfully upgraded your sword!")
+                                        await menu.editReply({ embeds: [embed], components: [goarmor_leg], files: [] });
+                                    } else {
+                                        const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_leg], files: [] });
+                                    }
+                                }  else {
+                                    const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_leg], files: [] });
+                                }
+
+                            } else if (menu.customId == "cancel_armor_leg_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Leg')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_leg.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_leg.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_leg, button_back] });
+                            } else if (menu.customId == "update_item_armor_foot_id") {
+                                await menu.deferUpdate();
+                                const button_sword_ug = new ActionRowBuilder()
+                                .addComponents(
+                                    new ButtonBuilder()
+                                    .setCustomId("confirm_armor_foot_id")
+                                    .setLabel("Confirm")
+                                    .setStyle(ButtonStyle.Secondary),
+                                    new ButtonBuilder()
+                                    .setCustomId("cancel_armor_foot_id")
+                                    .setLabel("Cancel")
+                                    .setStyle(ButtonStyle.Secondary),
+                                );
+
+                                const embed = new EmbedBuilder()
+                                .setDescription("Are you sure you want to upgrade your armor_foot?")
+
+                                await menu.editReply({ embeds: [embed], components: [button_sword_ug], files: [] });
+                                    
+
+                            } else if (menu.customId == "confirm_armor_foot_id") {
+                                await menu.deferUpdate();
+
+                                const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const item = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`);
+                                const item_length = inv.item.filter(x => x.status === `anyomni_upgrade_${pet.type[0].type_system}`).length;
+
+                                if(item) {
+                                    if(item_length >= 1) {
+                                        for (let i = 0; i < 1; i++) {
+                                            const index = inv.item.indexOf(item[i]);
+                                            if (index > -1) {
+                                                inv.item.splice(index, 1);
+                                            }
+                                        }
+
+                                        // random string 
+                                        const true_false = ["+", "-"]
+                                        const random_true_false = true_false[Math.floor(Math.random() * true_false.length)];
+                                        console.log(random_true_false)
+
+                                        if(random_true_false == "+"){
+                                            pet.type[0] = {
+                                                type: pet.type[0].type,
+                                                type_system: pet.type[0].type_system,
+                                                emoji: pet.type[0].emoji,
+                                                sword: {
+                                                    name: pet.type[0].sword.name,
+                                                    emoji: pet.type[0].sword.emoji,
+                                                    status: pet.type[0].sword.status,
+                                                    type: pet.type[0].sword.type,
+                                                    damage_attack: pet.type[0].sword.damage_attack , 
+                                                    critical: pet.type[0].sword.critical,
+                                                    durability: pet.type[0].sword.durability ,
+                                                    level_upgade: pet.type[0].sword.level_upgade,
+                                                },
+                                                armor_head: {
+                                                    name: pet.type[0].armor_head.name,
+                                                    emoji: pet.type[0].armor_head.emoji,
+                                                    status: pet.type[0].armor_head.status,
+                                                    type: pet.type[0].armor_head.type,
+                                                    defense: pet.type[0].armor_head.defense,
+                                                    durability: pet.type[0].armor_head.durability ,
+                                                    level_upgade: pet.type[0].armor_head.level_upgade,
+                                                },
+                                                armor_body: {
+                                                    name: pet.type[0].armor_body.name,
+                                                    emoji: pet.type[0].armor_body.emoji,
+                                                    status: pet.type[0].armor_body.status,
+                                                    type: pet.type[0].armor_body.type,
+                                                    defense: pet.type[0].armor_body.defense ,
+                                                    durability: pet.type[0].armor_body.durability ,
+                                                    level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                },
+                                                armor_leg: {
+                                                    name: pet.type[0].armor_leg.name,
+                                                    emoji: pet.type[0].armor_leg.emoji,
+                                                    status: pet.type[0].armor_leg.status,
+                                                    type: pet.type[0].armor_leg.type,
+                                                    defense: pet.type[0].armor_leg.defense ,
+                                                    durability: pet.type[0].armor_leg.durability ,
+                                                    level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                },
+                                                armor_foot: {
+                                                    name: pet.type[0].armor_foot.name,
+                                                    emoji: pet.type[0].armor_foot.emoji,
+                                                    status: pet.type[0].armor_foot.status,
+                                                    type: pet.type[0].armor_foot.type,
+                                                    defense: pet.type[0].armor_foot.defense += 15,
+                                                    durability: pet.type[0].armor_foot.durability += 5,
+                                                    level_upgade: pet.type[0].armor_foot.level_upgade +=1,
+                                                },
+                                            };
+                                        } else if(random_true_false == "-"){
+                                            if (pet.type[0].armor_foot.level_upgade <= 0 || pet.type[0].armor_foot.defense <= 0 || pet.type[0].armor_foot.durability <= 0 ) {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: 0,
+                                                        durability: 0,
+                                                        level_upgade: 1,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense ,
+                                                        durability: pet.type[0].armor_foot.durability ,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade ,
+                                                    },
+                                                };
+                                            } else {
+                                                pet.type[0] = {
+                                                    type: pet.type[0].type,
+                                                    type_system: pet.type[0].type_system,
+                                                    emoji: pet.type[0].emoji,
+                                                    sword: {
+                                                        name: pet.type[0].sword.name,
+                                                        emoji: pet.type[0].sword.emoji,
+                                                        status: pet.type[0].sword.status,
+                                                        type: pet.type[0].sword.type,
+                                                        damage_attack: pet.type[0].sword.damage_attack , 
+                                                        critical: pet.type[0].sword.critical,
+                                                        durability: pet.type[0].sword.durability ,
+                                                        level_upgade: pet.type[0].sword.level_upgade,
+                                                    },
+                                                    armor_head: {
+                                                        name: pet.type[0].armor_head.name,
+                                                        emoji: pet.type[0].armor_head.emoji,
+                                                        status: pet.type[0].armor_head.status,
+                                                        type: pet.type[0].armor_head.type,
+                                                        defense: pet.type[0].armor_head.defense ,
+                                                        durability: pet.type[0].armor_head.durability ,
+                                                        level_upgade: pet.type[0].armor_head.level_upgade,
+                                                    },
+                                                    armor_body: {
+                                                        name: pet.type[0].armor_body.name,
+                                                        emoji: pet.type[0].armor_body.emoji,
+                                                        status: pet.type[0].armor_body.status,
+                                                        type: pet.type[0].armor_body.type,
+                                                        defense: pet.type[0].armor_body.defense ,
+                                                        durability: pet.type[0].armor_body.durability ,
+                                                        level_upgade: pet.type[0].armor_body.level_upgade ,
+                                                    },
+                                                    armor_leg: {
+                                                        name: pet.type[0].armor_leg.name,
+                                                        emoji: pet.type[0].armor_leg.emoji,
+                                                        status: pet.type[0].armor_leg.status,
+                                                        type: pet.type[0].armor_leg.type,
+                                                        defense: pet.type[0].armor_leg.defense ,
+                                                        durability: pet.type[0].armor_leg.durability ,
+                                                        level_upgade: pet.type[0].armor_leg.level_upgade ,
+                                                    },
+                                                    armor_foot: {
+                                                        name: pet.type[0].armor_foot.name,
+                                                        emoji: pet.type[0].armor_foot.emoji,
+                                                        status: pet.type[0].armor_foot.status,
+                                                        type: pet.type[0].armor_foot.type,
+                                                        defense: pet.type[0].armor_foot.defense -= 15,
+                                                        durability: pet.type[0].armor_foot.durability -= 5,
+                                                        level_upgade: pet.type[0].armor_foot.level_upgade-=1 ,
+                                                    },
+                                                };
+                                            }
+                                        }
+                                        await inv.save();
+                                        await pet.save();
+                                        const loading = new EmbedBuilder()
+                                        .setDescription("Loading...")
+                                        .setColor(client.color)
+        
+                                        await menu.editReply({ embeds: [loading], components: [], files: [] });
+                                        await new Promise(r => setTimeout(r, 5000));
+                                        const embed = new EmbedBuilder()
+                                        .setDescription("You have successfully upgraded your sword!")
+                                        await menu.editReply({ embeds: [embed], components: [goarmor_foot], files: [] });
+                                    } else {
+                                        const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_foot], files: [] });
+                                    }
+                                }  else {
+                                    const embed = new EmbedBuilder()
+                                    .setDescription("You don't have enough items to upgrade your sword!")
+        
+                                    await menu.editReply({ embeds: [embed], components: [goarmor_foot], files: [] });
+                                }
+
+                            } else if (menu.customId == "cancel_armor_foot_id") {
+                                await  menu.deferUpdate();
+
+                                const pet = await GPet.findOne({ user: interaction.user.id });
+
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Leg')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_foot.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_foot.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_foot.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
+                                   await menu.editReply({ embeds: [embed], components: [select, button_change_remove_foot, button_back] });
+                            } 
+
+
+
+
+
                        }  else if(menu.isStringSelectMenu()) {
                            if (menu.customId == "item_select_id") {
                                let [ directory ] = menu.values;
@@ -3618,6 +5610,9 @@ module.exports = {
                            
                                }else if (directory === "sword_id") {
                                    await  menu.deferUpdate();
+
+                                   const pet = await GPet.findOne({ user: interaction.user.id });
+
                                    const embed = new EmbedBuilder()
                                    .setTitle('Sword')
                                    .setFields(
@@ -3630,42 +5625,92 @@ module.exports = {
                                        {
                                            name: "Durability", value: `${pet.type[0].sword.durability}`, inline: false
                                        },
+                                       {
+                                           name: "Level", value: `${pet.type[0].sword.level_upgade}`, inline: false
+                                       }
                                    )
                                    .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
                                    .setColor(client.color)
                        
                                    await menu.editReply({ embeds: [embed], components: [select, button_change_remove_sword, button_back] });
                                } else if (directory === "armor_head_id") {
-                                   await  menu.deferUpdate();
-                                   const embed = new EmbedBuilder()
-                                   .setTitle('armor Head')
-                                   .setDescription('armor Head is a armor that can be used to protect your head.')
-                                   .setColor(client.color)
-                       
+                                await  menu.deferUpdate();
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Head')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_head.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_head.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_head.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
                                    await menu.editReply({ embeds: [embed], components: [select, button_change_remove_head, button_back] });
                            
                                } else if (directory === "armor_body_id") {
-                                    await  menu.deferUpdate();
-                                   const embed = new EmbedBuilder()
-                                   .setTitle('armor Body')
-                                   .setDescription('armor Body is a armor that can be used to protect your body.')
-                                   .setColor(client.color)
+                                await  menu.deferUpdate();
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Body')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_body.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_body.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
                        
                                    await menu.editReply({ embeds: [embed], components: [select, button_change_remove_body, button_back] });
                                } else if (directory === "armor_leg_id") {
-                                    await  menu.deferUpdate();
-                                   const embed = new EmbedBuilder()
-                                   .setTitle('armor Leg')
-                                   .setDescription('armor Leg is a armor that can be used to protect your leg.')
-                                   .setColor(client.color)
+                                await  menu.deferUpdate();
+                                const embed = new EmbedBuilder()
+                                .setTitle('Armor Leg')
+                                .setFields(
+                                    {
+                                        name: "Defense", value: `${pet.type[0].armor_leg.defense}`, inline: false
+                                    },
+                                    {
+                                        name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                    },
+                                    {
+                                        name: "Level", value: `${pet.type[0].armor_leg.level_upgade}`, inline: false
+                                    }
+                                )
+                                .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                .setColor(client.color)
+
                        
                                    await menu.editReply({ embeds: [embed], components: [select, button_change_remove_leg, button_back] });
                                 } else if (directory === "armor_foot_id") {
-                                   await  menu.deferUpdate();
-                                   const embed = new EmbedBuilder()
-                                   .setTitle('armor Foot')
-                                   .setDescription('armor Foot is a armor that can be used to protect your foot.')
-                                   .setColor(client.color)
+                                    await  menu.deferUpdate();
+                                    const embed = new EmbedBuilder()
+                                    .setTitle('Armor Foot')
+                                    .setFields(
+                                        {
+                                            name: "Defense", value: `${pet.type[0].armor_foot.defense}`, inline: false
+                                        },
+                                        {
+                                            name: "Durability", value: `${pet.type[0].armor_leg.durability}`, inline: false
+                                        },
+                                        {
+                                            name: "Level", value: `${pet.type[0].armor_foot.level_upgade}`, inline: false
+                                        }
+                                    )
+                                    .setThumbnail("https://i.imgur.com/eTlIM85.jpg")
+                                    .setColor(client.color)
+    
                        
                                    await menu.editReply({ embeds: [embed], components: [select, button_change_remove_foot, button_back] });
                                 } 

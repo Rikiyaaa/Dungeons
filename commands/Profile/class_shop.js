@@ -5,6 +5,7 @@ const { shopArmorHead } = require("../../structures/shop/class/armor_head.js");
 const { shopArmorBody } = require("../../structures/shop/class/armor_body.js");
 const { shopArmorLeg } = require("../../structures/shop/class/armor_leg.js");
 const { shopArmorFoot } = require("../../structures/shop/class/armor_foot.js");
+const { shopAnyomniUpgrade } = require("../../structures/shop/class/anyomni_upgrade.js");
 
 module.exports = {
     name: ["class", "shop"], // Base Commands! // Sub Commands!
@@ -49,6 +50,11 @@ module.exports = {
                         description: "Shop your Armor foot",
                         value: "armor_foot"
                     },
+                    {
+                        label: "6️⃣ Anyomni Upgrade",
+                        description: "Shop your Anyomni Upgrade",
+                        value: "anyomni_upgrade"
+                    }
                 ])
             ])
 
@@ -72,24 +78,33 @@ module.exports = {
         collector.on('collect', async (menu) => {
             if(menu.isStringSelectMenu()) {
                 if(menu.customId === "shop_class_select") {
-                    await menu.deferUpdate();
                     /// value id
                     let [ directory ] = menu.values;
 
                     if (directory === "sword") {
+                        await menu.deferUpdate();
                         shopSword(client, interaction, msg);
                         collector.stop();
                     }  else if (directory === "armor_head") {
+                        await menu.deferUpdate();
                         shopArmorHead(client, interaction, msg);
                         collector.stop();
                     } else if (directory === "armor_body") {
+                        await menu.deferUpdate();
                         shopArmorBody(client, interaction, msg);
                         collector.stop();
                     } else if (directory === "armor_legs") {
+                        await menu.deferUpdate();
                         shopArmorLeg(client, interaction, msg);
                         collector.stop();
                     } else if (directory === "armor_foot") {
+                        await menu.deferUpdate();
                         shopArmorFoot(client, interaction, msg);
+                        collector.stop();
+                    } else if (directory === "anyomni_upgrade") {
+                        await menu.deferUpdate();
+
+                        shopAnyomniUpgrade(client, interaction, msg);
                         collector.stop();
                     }
                 }

@@ -65,6 +65,7 @@ module.exports = {
                         // change the type of the class to sword and save it to the database 
                         cprofile.type[0] = {
                             type: "Swordman",
+                            type_system: "swordman",
                             emoji: "⚔️",
                             sword: {
                                 name: "Wooden Sword",
@@ -82,6 +83,8 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_head",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_body: {
                                 name: "Wooden Armor",
@@ -89,6 +92,8 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_body",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_leg: {
                                 name: "Wooden Leggings",
@@ -96,6 +101,8 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_leg",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_foot: {
                                 name: "Wooden Boots",
@@ -103,6 +110,8 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_foot",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                         };
 
@@ -125,6 +134,7 @@ module.exports = {
 
                         cprofile.type[0] = {
                             type: "Magic",
+                            type_system: "magic",
                             emoji: "🧙‍♂️",
                             sword: {
                                 name: "Wooden Sword",
@@ -142,6 +152,8 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_head",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_body: {
                                 name: "Wooden Armor",
@@ -149,6 +161,8 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_body",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_leg: {
                                 name: "Wooden Leggings",
@@ -156,6 +170,8 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_leg",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_foot: {
                                 name: "Wooden Boots",
@@ -163,6 +179,8 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_foot",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                         };
                     
@@ -186,6 +204,7 @@ module.exports = {
 
                         cprofile.type[0] = {
                             type: "Warrior",
+                            type_system: "warrior",
                             emoji: "🏹",
                             sword: {
                                 name: "Wooden Sword",
@@ -203,6 +222,8 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_head",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_body: {
                                 name: "Wooden Armor",
@@ -210,6 +231,8 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_body",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_leg: {
                                 name: "Wooden Leggings",
@@ -217,6 +240,8 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_leg",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                             armor_foot: {
                                 name: "Wooden Boots",
@@ -224,6 +249,8 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_foot",
                                 defense: 5,
+                                durability: 100,
+                                level_upgade: 1,
                             },
                         };
     

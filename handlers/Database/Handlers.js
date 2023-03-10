@@ -349,6 +349,7 @@ module.exports = async (client) => {
                 type: [
                     {
                         type: "Human",
+                        type_system: "human",
                         emoji: "👤",
                         sword: {
                             name: "Wooden Sword",
@@ -367,6 +368,7 @@ module.exports = async (client) => {
                             status: "default",
                             type: "human_armor_head",
                             defense: 5,
+                            durability: 100,
                             level_upgade: 1,
                         },
                         armor_body: {
@@ -375,6 +377,7 @@ module.exports = async (client) => {
                             status: "default",
                             type: "human_armor_body",
                             defense: 5,
+                            durability: 100,
                             level_upgade: 1,
                         },
                         armor_leg: {
@@ -383,6 +386,7 @@ module.exports = async (client) => {
                             status: "default",
                             type: "human_armor_leg",
                             defense: 5,
+                            durability: 100,
                             level_upgade: 1,
                         },
                         armor_foot: {
@@ -391,6 +395,7 @@ module.exports = async (client) => {
                             status: "default",
                             type: "human_armor_foot",
                             defense: 5,
+                            durability: 100,
                             level_upgade: 1,
                         },
                     },

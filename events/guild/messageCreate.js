@@ -88,6 +88,7 @@ module.exports = async(client, message) => {
             if (match_message.length >= 3) {
 
                 let fallback_get_spam = spam_fallback[Math.floor(Math.random() * spam_fallback.length)];
+
                 message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: fallback_get_spam, allowedMentions: { repliedUser: false } }).catch(() => { }); });
 
             } setTimeout(() => {
@@ -106,9 +107,14 @@ module.exports = async(client, message) => {
                 let fallback_get = default_fallback[Math.floor(Math.random() * default_fallback.length)];
                 return message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: fallback_get, allowedMentions: { repliedUser: false } }).catch(() => { }); });
             };
-            let match_global_train_normal = global_train_normal.filter(train => message.content.includes(train.question));
+            let match_global_train_normal = global_train_normal.filter(train => message.content.includes(train.question));// 
                 console.log('สถานะของคุณปกติ')
-            if (match_global_train_normal.length >= 1) message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_normal.length == 1 ? match_global_train_normal[0].answer : match_global_train_normal[Math.floor(Math.random() * match_global_train_normal.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { }); });
+            if (match_global_train_normal.length >= 1) {
+                message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_normal.length == 1 ? match_global_train_normal[0].answer : match_global_train_normal[Math.floor(Math.random() * match_global_train_normal.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { }); });
+            } else {
+                let fallback_get = default_fallback[Math.floor(Math.random() * default_fallback.length)];
+                message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: fallback_get, allowedMentions: { repliedUser: false } }).catch(() => { }); });
+            }
         } else if(user.status == 'โกรธ') {
             if (!global_train_hate || global_train_hate.length < 1) {
                 console.log('สถานะของคุณไม่ใช่โกรธ')
@@ -117,8 +123,13 @@ module.exports = async(client, message) => {
             };
             let match_global_train_hate = global_train_hate.filter(train => message.content.includes(train.question));
                 console.log('สถานะของคุณโกรธ')
-            if (match_global_train_hate.length >= 1)  message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_hate.length == 1 ? match_global_train_hate[0].answer : match_global_train_hate[Math.floor(Math.random() * match_global_train_hate.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { });});
-        } else if(user.status == 'รัก') {
+            if (match_global_train_hate.length >= 1) {
+             message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_hate.length == 1 ? match_global_train_hate[0].answer : match_global_train_hate[Math.floor(Math.random() * match_global_train_hate.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { });});
+            }  else {
+                let fallback_get = default_fallback[Math.floor(Math.random() * default_fallback.length)];
+                message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: fallback_get, allowedMentions: { repliedUser: false } }).catch(() => { }); });
+            }
+            } else if(user.status == 'รัก') {
             if (!global_train_love || global_train_love.length < 1) {
                 console.log('สถานะของคุณไม่ใช่รัก')
                 let fallback_get = default_fallback[Math.floor(Math.random() * default_fallback.length)];
@@ -126,8 +137,13 @@ module.exports = async(client, message) => {
             };
             let match_global_train_love = global_train_love.filter(train => message.content.includes(train.question));
                 console.log('สถานะของคุณรัก')
-            if (match_global_train_love.length >= 1)  message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_love.length == 1 ? match_global_train_love[0].answer : match_global_train_love[Math.floor(Math.random() * match_global_train_love.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { });});
+            if (match_global_train_love.length >= 1) {
+             message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: match_global_train_love.length == 1 ? match_global_train_love[0].answer : match_global_train_love[Math.floor(Math.random() * match_global_train_love.length)].answer, allowedMentions: { repliedUser: false } }).catch(() => { });});
+        }  else {
+            let fallback_get = default_fallback[Math.floor(Math.random() * default_fallback.length)];
+            message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ content: fallback_get, allowedMentions: { repliedUser: false } }).catch(() => { }); });
         }
+            }
         } else {
             if (user.status == 'ปกติ') {
                 if (!all_train_normal) {

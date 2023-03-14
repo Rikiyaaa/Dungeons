@@ -15,6 +15,10 @@ module.exports = {
         const cprofile = await Cradprofile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
         const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
+        if(profile.select_class_success === true) {
+            return interaction.editReply({ content: "You have already selected your class." });
+        } else if(profile.select_class_success === false) {
+
         const row = new ActionRowBuilder()
         .addComponents([
             new StringSelectMenuBuilder()
@@ -59,7 +63,7 @@ module.exports = {
                     let [ directory ] = menu.values;
 
                     if (directory === "sword") {
-
+                        profile.select_class_success = true
                         profile.money -= 500;
 
                         // change the type of the class to sword and save it to the database 
@@ -83,7 +87,9 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_head",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_body: {
@@ -92,7 +98,9 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_body",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_leg: {
@@ -101,7 +109,9 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_leg",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_foot: {
@@ -110,7 +120,9 @@ module.exports = {
                                 status: "default",
                                 type: "swordman_armor_foot",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                         };
@@ -129,7 +141,7 @@ module.exports = {
 
                         collector.stop();
                     } else if (directory === "magic") {
-
+                        profile.select_class_success = true
                         profile.money -= 500;
 
                         cprofile.type[0] = {
@@ -152,7 +164,9 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_head",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_body: {
@@ -161,7 +175,9 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_body",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_leg: {
@@ -170,7 +186,9 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_leg",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_foot: {
@@ -179,7 +197,9 @@ module.exports = {
                                 status: "default",
                                 type: "magic_armor_foot",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                         };
@@ -199,7 +219,7 @@ module.exports = {
                         collector.stop();
                     
                     } else if (directory === "warrior") {
-
+                        profile.select_class_success = true
                         profile.money -= 500;
 
                         cprofile.type[0] = {
@@ -222,7 +242,9 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_head",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_body: {
@@ -231,7 +253,9 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_body",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_leg: {
@@ -240,7 +264,9 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_leg",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                             armor_foot: {
@@ -249,7 +275,9 @@ module.exports = {
                                 status: "default",
                                 type: "warrior_armor_foot",
                                 defense: 5,
+                                defense_max: 100,
                                 durability: 100,
+                                durability_max: 100,
                                 level_upgade: 1,
                             },
                         };
@@ -281,6 +309,7 @@ module.exports = {
                 msg.edit({ embeds: [timed], components: [], files: [] });
             }
         });
+    }
     }
 }
 

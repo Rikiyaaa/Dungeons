@@ -168,13 +168,15 @@ for (let i = 0; i < attcs.length; i++) {
 
                 const GenID = generateID();
 
-                iteminv.item.push({
+               iteminv.item.push({
                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
                     defense: 5,
+                    defense_max: item.defense_max,
                     durability: 100,
+                    durability_max: item.durability_max,
                     level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,
@@ -203,13 +205,15 @@ for (let i = 0; i < attcs.length; i++) {
 
                 const GenID = generateID();
 
-                iteminv.item.push({
+               iteminv.item.push({
                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
                     defense: 5,
+                    defense_max: item.defense_max,
                     durability: 100,
+                    durability_max: item.durability_max,
                     level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,
@@ -238,13 +242,15 @@ for (let i = 0; i < attcs.length; i++) {
 
                 const GenID = generateID();
 
-                iteminv.item.push({
+               iteminv.item.push({
                     name: item.name,
                     emoji: item.emoji,
                     status: item.status,
                     type: item.type,
                     defense: 5,
+                    defense_max: item.defense_max,
                     durability: 100,
+                    durability_max: item.durability_max,
                     level_upgade: item.level_upgade,
                     price: item.price,
                     level: item.level,

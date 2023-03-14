@@ -2,6 +2,7 @@ const voucher = require('@fortune-inc/tw-voucher');
 const { EmbedBuilder, ModalBuilder , ActionRowBuilder, TextInputBuilder, TextInputStyle, ButtonStyle, ButtonBuilder, AttachmentBuilder, StringSelectMenuBuilder} = require("discord.js");
 const { betSave, revMoney, getResult, payoutWinners, sendMsg} = require("../../structures/Dragon_Tiger.js")
 const { betSave_coinflip, revMoney_coinflip, getResult_coinflip, payoutWinners_coinflip, sendMsg_coinflip} = require("../../structures/Coinflip.js")
+const { SearchMap } = require("../../structures/map/SearchMap.js");
 const Topup_data = require("../../settings/models/topup_data.js");
 const Dragon_T = require("../../settings/models/Dragon_T.js");
 const Coinflip = require("../../settings/models/coinflip.js");
@@ -685,7 +686,7 @@ module.exports = async(client, interaction) => {
                 msg.edit({ embeds: [timed], components: [], files: [] });
             }
         });
-      }
+      } 
     
     }
 

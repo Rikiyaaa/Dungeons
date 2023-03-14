@@ -11,6 +11,8 @@ const monter = Schema({
     location_image: String,
     damage_attack: Number,
     health: Number,
+    health_max: Number,
+    health_emoji: String,
     exp: Number,
     drop: Array,
 });

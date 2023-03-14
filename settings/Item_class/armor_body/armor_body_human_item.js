@@ -6,7 +6,9 @@ module.exports = {
             status: "common",
             type: "human_armor_body",
             defense: 5,
-                    durability: 100,
+            defense_max: 100,
+            durability: 100,
+            durability_max: 100,
             level_upgade: 1,
             price: 10000,
             level: 1
@@ -19,7 +21,9 @@ module.exports = {
             status: "common",
             type: "human_armor_body",
             defense: 5,
-                    durability: 100,
+            defense_max: 100,
+            durability: 100,
+            durability_max: 100,
             level_upgade: 1,
             price: 10000,
             level: 1
@@ -32,7 +36,9 @@ module.exports = {
             status: "common",
             type: "human_armor_body",
             defense: 5,
-                    durability: 100,
+            defense_max: 100,
+            durability: 100,
+            durability_max: 100,
             level_upgade: 1,
             price: 10000,
             level: 1

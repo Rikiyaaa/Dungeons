@@ -17,7 +17,7 @@ module.exports = {
 
         await interaction.reply({ embeds: [waitembed], ephemeral: true });
 
-        const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+          const cprofile = await GProfile.findOne({ user: interaction.user.id });
         const profile = await Member.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
 
@@ -145,6 +145,7 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                     .setColor("#bdc6e9")
+                    .setTitle(`1`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                     .setFields(
@@ -183,7 +184,7 @@ module.exports = {
                 await menu.deferUpdate();
                 if(menu.customId === "attack") {
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                    const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -330,7 +331,7 @@ module.exports = {
                             level_upgade: cprofile.type[0].armor_foot.level_upgade ,
                         },
                     };
-                }
+                    }
 
                     if (cprofile.type[0].sword.durability <= 20) {
                         interaction.followUp({content: `อาวุธของคุณใกล้จะพังเเล้วกรุณาซ้อมด้วย`, ephemeral: true})
@@ -466,6 +467,7 @@ module.exports = {
 
                     const attack = new EmbedBuilder()
                     .setColor("#bdc6e9")
+                    .setTitle(`2`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                     .setFields(
@@ -1303,6 +1305,7 @@ module.exports = {
     
                         const attack_2 = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`3`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                     .setFields(
@@ -1373,6 +1376,7 @@ module.exports = {
 
                         const lose = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`4`)
                         .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                         .setDescription(`คุณเเพ้มอนเตอร์ ${monter_name_get} แล้ว`)
                         .setFields(
@@ -1441,6 +1445,7 @@ module.exports = {
 
                         const embed = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`5`)
                         .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                         .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                         .setFields(
@@ -1481,7 +1486,7 @@ module.exports = {
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -1570,6 +1575,7 @@ module.exports = {
 
                     const attack = new EmbedBuilder()
                     .setColor("#bdc6e9")
+                    .setTitle(`6`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                     .setFields(
@@ -2407,6 +2413,7 @@ module.exports = {
     
                         const attack_2 = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`7`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                     .setFields(
@@ -2477,6 +2484,7 @@ module.exports = {
 
                         const lose = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`8`)
                         .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                         .setDescription(`คุณเเพ้มอนเตอร์ ${monter_name_get} แล้ว`)
                         .setFields(
@@ -2545,6 +2553,7 @@ module.exports = {
 
                         const embed = new EmbedBuilder()
                         .setColor("#bdc6e9")
+                        .setTitle(`9`)
                         .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                         .setDescription(`เจอมอนเตอร์ชื่อ ${monter_name_get} ระดับ ${monter_level} แล้ว`)
                         .setFields(
@@ -2641,6 +2650,7 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                     .setColor("#bdc6e9")
+                    .setTitle(`10`)
                     .setAuthor({ name: `เจอมอนเตอร์ ที่ ${monter_location}`, iconURL: `${monter_location_image}` })
                     .setDescription(`มอนเตอร์ ${monter_name_get} หนีไปเเล้ว!!`)
                     .setFields(
@@ -2798,7 +2808,7 @@ module.exports = {
                 await menu.deferUpdate();
                 if(menu.customId === "attack") {
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -4096,7 +4106,7 @@ module.exports = {
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -5413,7 +5423,7 @@ module.exports = {
                 await menu.deferUpdate();
                 if(menu.customId === "attack") {
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -6711,7 +6721,7 @@ module.exports = {
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -8028,7 +8038,7 @@ module.exports = {
                 await menu.deferUpdate();
                 if(menu.customId === "attack") {
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(
@@ -9326,7 +9336,7 @@ module.exports = {
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-                    const cprofile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+                      const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
                     const row = new ActionRowBuilder()
                     .addComponents(

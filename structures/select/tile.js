@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, AttachmentBuild
 const { editTile } = require("../edit/tile.js")
 const GInv = require("../../settings/models/inventory.js");
 
-const selectTile = async (client, interaction, ) => {
+const selectTile = async (client, interaction, pendingEditHouseCommands) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -47,7 +47,7 @@ const selectTile = async (client, interaction, ) => {
 
                 const item = inv.item.find(x => x.id === directory);
 
-                editTile(client, interaction,  item.name, item.type, item.id);
+                editTile(client, interaction,  item.name, item.type, item.id, pendingEditHouseCommands);
                 await collector.stop();
             }
         }

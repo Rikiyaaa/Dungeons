@@ -5,7 +5,7 @@ const GHouse = require("../../settings/models/house.js");
 const { replaceHouse } = require("../../structures/replace.js");
 const { saveTILE } = require("./confirm.js");
 
-const editTile = async (client, interaction,  item, type, id) => {
+const editTile = async (client, interaction,  item, type, id, pendingEditHouseCommands) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -31,6 +31,7 @@ const editTile = async (client, interaction,  item, type, id) => {
     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${type}.png` })
 
     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
+        pendingEditHouseCommands[interaction.user.id] = true;
         await saveTILE(interaction, id,  message, check);
     });
 

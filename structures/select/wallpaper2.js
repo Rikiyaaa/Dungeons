@@ -4,7 +4,7 @@ const GInv = require("../../settings/models/inventory.js");
 const HInv = require("../../settings/models/houseinv.js");
 const Canvas = require("@napi-rs/canvas");
 
-const selectWallSide2 = async function (client, interaction,  item , type) {
+const selectWallSide2 = async function (client, interaction,  item , pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -42,11 +42,11 @@ const selectWallSide2 = async function (client, interaction,  item , type) {
 
             if(menu.customId === "wall_left_e") {
 
-            await selectWallpaper_left2(client, interaction,  item)
+            await selectWallpaper_left2(client, interaction, item, pendingEditHouseCommands)
             collector.stop();
             } else if (menu.customId === "wall_right_e") {
 
-            await selectWallpaper_right2(client, interaction,  item)
+            await selectWallpaper_right2(client, interaction, item, pendingEditHouseCommands)
             collector.stop();
             }
         }
@@ -65,7 +65,7 @@ const selectWallSide2 = async function (client, interaction,  item , type) {
     return;
 }
 
-const selectWallpaper_left2 = async (client, interaction, ) => {
+const selectWallpaper_left2 = async (client, interaction, pendingEditHouseCommands) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -111,7 +111,7 @@ const selectWallpaper_left2 = async (client, interaction, ) => {
 
                 const item = hinv.furniture_left.find(x => x.id === directory);
 
-                editFurnitureAL(client, interaction,  item.name, item.type, item.id, item.side);
+                editFurnitureAL(client, interaction,  item.name, item.type, item.id, item.side, pendingEditHouseCommands);
                 await collector.stop();
             }
         }
@@ -130,7 +130,7 @@ const selectWallpaper_left2 = async (client, interaction, ) => {
    return;
 }
 
-const selectWallpaper_right2 = async (client, interaction, ) => {
+const selectWallpaper_right2 = async (client, interaction, pendingEditHouseCommands) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -176,7 +176,7 @@ const selectWallpaper_right2 = async (client, interaction, ) => {
 
                 const item = hinv.furniture_right.find(x => x.id === directory);
 
-                editFurnitureAR(client, interaction,  item.name, item.type, item.id, item.side);
+                editFurnitureAR(client, interaction,  item.name, item.type, item.id, item.side, pendingEditHouseCommands);
                 await collector.stop();
             }
         }

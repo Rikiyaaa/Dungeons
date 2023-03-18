@@ -6,7 +6,7 @@ const HInv = require("../../settings/models/houseinv.js");
 const { replaceHouse } = require("../../structures/replace.js");
 const { saveL1, saveL2, saveL3, saveL4, saveR1, saveR2, saveR3, saveR4 } = require("../../structures/edit/confirm.js");
 
-const editWallL = async function (client, interaction,  item, type, id, side) {
+const editWallL = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -102,7 +102,8 @@ const editWallL = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveL1(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveL1(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_ltwo") {
@@ -130,7 +131,8 @@ const editWallL = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveL2(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveL2(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lthree") {
@@ -159,7 +161,8 @@ const editWallL = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveL3(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveL3(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lfour") {
@@ -181,7 +184,8 @@ const editWallL = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveL4(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveL4(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -202,7 +206,7 @@ const editWallL = async function (client, interaction,  item, type, id, side) {
     return;
 }
 
-const editWallR = async function (client, interaction,  item, type, id, side) {
+const editWallR = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -298,7 +302,8 @@ const editWallR = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveR1(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveR1(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rtwo") {
@@ -326,7 +331,8 @@ const editWallR = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveR2(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveR2(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rthree") {
@@ -355,7 +361,8 @@ const editWallR = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveR3(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveR3(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rfour") {
@@ -377,7 +384,8 @@ const editWallR = async function (client, interaction,  item, type, id, side) {
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveR4(interaction, id,  message, check);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveR4(interaction, id,  message, check , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }

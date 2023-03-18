@@ -23,7 +23,7 @@ module.exports = async (client) => {
             const newHome = await GHome.create({
                 guild: guildId,
                 user: userId,
-                house: "https://i.imgur.com/qJCkFHv.png",
+                house: "https://cdn.discordapp.com/attachments/1021744464550703195/1086654286823436469/qJCkFHv.png",
                 six_clock: true,
                 nineteen_clock: false,
                 A_DATA: {

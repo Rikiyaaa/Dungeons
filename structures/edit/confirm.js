@@ -3,7 +3,7 @@ const GInv = require("../../settings/models/inventory.js");
 const GHouse = require("../../settings/models/house.js");
 const HInv = require("../../settings/models/houseinv.js");
 
-const saveLA1 = async function (interaction, id,  message, check, item) {
+const saveLA1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -46,7 +46,7 @@ const saveLA1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
-
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_la1") {
@@ -57,7 +57,7 @@ const saveLA1 = async function (interaction, id,  message, check, item) {
                     /// save A3
                     home.A_DATA.LA2 = false
                     home.A_DATA.RA2 = false
-                } else {
+                } else if (check.area === 1) {
                     home.A_DATA.LA1 = false
                     home.A_DATA.RA1 = false
                     home.A_DATA.LA1I = "";
@@ -65,7 +65,7 @@ const saveLA1 = async function (interaction, id,  message, check, item) {
                 await home.save();
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
-
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -94,7 +94,7 @@ const saveLA1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLA2 = async function (interaction, id,  message, check, item) {
+const saveLA2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -113,7 +113,7 @@ const saveLA2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -133,6 +133,7 @@ const saveLA2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_la2") {
@@ -152,6 +153,7 @@ const saveLA2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -180,7 +182,7 @@ const saveLA2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLA3 = async function (interaction, id,  message, check, item) {
+const saveLA3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -199,7 +201,7 @@ const saveLA3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -222,6 +224,7 @@ const saveLA3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_la3") {
@@ -241,6 +244,7 @@ const saveLA3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -269,7 +273,7 @@ const saveLA3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLA4 = async function (interaction, id,  message, check, item) {
+const saveLA4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -288,7 +292,7 @@ const saveLA4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -311,6 +315,7 @@ const saveLA4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_la4") {
@@ -321,6 +326,7 @@ const saveLA4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -340,7 +346,7 @@ const saveLA4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLB1 = async function (interaction, id,  message, check, item) {
+const saveLB1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -359,7 +365,7 @@ const saveLB1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -382,12 +388,10 @@ const saveLB1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
-            } else if (f) {
-                
-            }
-            else if (menu.customId === "exit_lb1") {
+            } else if (menu.customId === "exit_lb1") {
                 if(check.area === 2) {
                     home.B_DATA.LB1 = false
                     home.B_DATA.RB1 = false
@@ -404,6 +408,7 @@ const saveLB1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -432,7 +437,7 @@ const saveLB1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLB2 = async function (interaction, id,  message, check, item) {
+const saveLB2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -451,7 +456,7 @@ const saveLB2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -474,6 +479,7 @@ const saveLB2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_lb2") {
@@ -493,6 +499,7 @@ const saveLB2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -521,7 +528,7 @@ const saveLB2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLB3 = async function (interaction, id,  message, check, item) {
+const saveLB3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -540,7 +547,7 @@ const saveLB3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -563,6 +570,7 @@ const saveLB3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_lb3") {
@@ -582,6 +590,7 @@ const saveLB3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -610,7 +619,7 @@ const saveLB3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLB4 = async function (interaction, id,  message, check, item) {
+const saveLB4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -629,7 +638,7 @@ const saveLB4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -652,6 +661,7 @@ const saveLB4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
 
             } else if (menu.customId === "exit_lb4") {
@@ -662,6 +672,7 @@ const saveLB4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -681,7 +692,7 @@ const saveLB4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLC1 = async function (interaction, id,  message, check, item) {
+const saveLC1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -700,7 +711,7 @@ const saveLC1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -723,6 +734,7 @@ const saveLC1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_lc1") {
                 if(check.area === 2) {
@@ -741,6 +753,7 @@ const saveLC1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -769,7 +782,7 @@ const saveLC1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLC2 = async function (interaction, id,  message, check, item) {
+const saveLC2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -788,7 +801,7 @@ const saveLC2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -811,6 +824,7 @@ const saveLC2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_lc2") {
                 if(check.area === 2) {
@@ -829,6 +843,7 @@ const saveLC2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -857,7 +872,7 @@ const saveLC2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLC3 = async function (interaction, id,  message, check, item) {
+const saveLC3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -876,7 +891,7 @@ const saveLC3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -899,6 +914,7 @@ const saveLC3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_lc3") {
                 if(check.area === 2) {
@@ -917,6 +933,7 @@ const saveLC3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -946,7 +963,7 @@ const saveLC3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLC4 = async function (interaction, id,  message, check, item) {
+const saveLC4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -965,7 +982,7 @@ const saveLC4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -988,6 +1005,7 @@ const saveLC4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_lc4") {
                 home.C_DATA.LC4 = false;
@@ -997,6 +1015,7 @@ const saveLC4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1016,7 +1035,7 @@ const saveLC4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLD1 = async function (interaction, id,  message, check, item) {
+const saveLD1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1035,7 +1054,7 @@ const saveLD1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1058,6 +1077,7 @@ const saveLD1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ld1") {
                 if(check.area === 2) {
@@ -1076,6 +1096,7 @@ const saveLD1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1104,7 +1125,7 @@ const saveLD1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLD2 = async function (interaction, id,  message, check, item) {
+const saveLD2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1123,7 +1144,7 @@ const saveLD2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1146,6 +1167,7 @@ const saveLD2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ld2") {
                 if(check.area === 2) {
@@ -1164,6 +1186,7 @@ const saveLD2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1192,7 +1215,7 @@ const saveLD2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLD3 = async function (interaction, id,  message, check, item) {
+const saveLD3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1211,7 +1234,7 @@ const saveLD3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1234,6 +1257,7 @@ const saveLD3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ld3") {
                 if(check.area === 2) {
@@ -1252,6 +1276,7 @@ const saveLD3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1280,7 +1305,7 @@ const saveLD3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveLD4 = async function (interaction, id,  message, check, item) {
+const saveLD4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1299,7 +1324,7 @@ const saveLD4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1322,6 +1347,7 @@ const saveLD4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ld4") {
                 home.D_DATA.LD4 = false;
@@ -1331,6 +1357,7 @@ const saveLD4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1351,7 +1378,7 @@ const saveLD4 = async function (interaction, id,  message, check, item) {
 
     
 };
-const saveRA1 = async function (interaction, id,  message, check, item) {
+const saveRA1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1370,7 +1397,7 @@ const saveRA1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1395,6 +1422,7 @@ const saveRA1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ra1") {
                 if(check.area === 2) {
@@ -1413,6 +1441,7 @@ const saveRA1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1441,7 +1470,7 @@ const saveRA1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRA2 = async function (interaction, id,  message, check, item) {
+const saveRA2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1460,7 +1489,7 @@ const saveRA2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1483,6 +1512,7 @@ const saveRA2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ra2") {
                 if(check.area === 2) {
@@ -1501,6 +1531,7 @@ const saveRA2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1529,7 +1560,7 @@ const saveRA2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRA3 = async function (interaction, id,  message, check, item) {
+const saveRA3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1548,7 +1579,7 @@ const saveRA3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1571,6 +1602,7 @@ const saveRA3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ra3") {
                 if(check.area === 2) {
@@ -1589,6 +1621,7 @@ const saveRA3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1617,7 +1650,7 @@ const saveRA3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRA4 = async function (interaction, id,  message, check, item) {
+const saveRA4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1636,7 +1669,7 @@ const saveRA4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1659,6 +1692,7 @@ const saveRA4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ra4") {
                 home.A_DATA.RA4 = false;
@@ -1668,6 +1702,7 @@ const saveRA4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1687,7 +1722,7 @@ const saveRA4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRB1 = async function (interaction, id,  message, check, item) {
+const saveRB1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1706,7 +1741,7 @@ const saveRB1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1729,6 +1764,7 @@ const saveRB1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rb1") {
                 if(check.area === 2) {
@@ -1747,6 +1783,7 @@ const saveRB1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1775,7 +1812,7 @@ const saveRB1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRB2 = async function (interaction, id,  message, check, item) {
+const saveRB2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1794,7 +1831,7 @@ const saveRB2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1817,6 +1854,7 @@ const saveRB2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rb2") {
                 if(check.area === 2) {
@@ -1835,6 +1873,7 @@ const saveRB2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1863,7 +1902,7 @@ const saveRB2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRB3 = async function (interaction, id,  message, check, item) {
+const saveRB3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1882,7 +1921,7 @@ const saveRB3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1905,6 +1944,7 @@ const saveRB3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rb3") {
                 if(check.area === 2) {
@@ -1923,6 +1963,7 @@ const saveRB3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -1951,7 +1992,7 @@ const saveRB3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRB4 = async function (interaction, id,  message, check, item) {
+const saveRB4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -1970,7 +2011,7 @@ const saveRB4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -1993,6 +2034,7 @@ const saveRB4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rb4") {
                 home.B_DATA.RB4 = false;
@@ -2002,6 +2044,7 @@ const saveRB4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2021,7 +2064,7 @@ const saveRB4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRC1 = async function (interaction, id,  message, check, item) {
+const saveRC1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2040,7 +2083,7 @@ const saveRC1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2063,6 +2106,7 @@ const saveRC1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rc1") {
                 if(check.area === 2) {
@@ -2081,6 +2125,7 @@ const saveRC1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2109,7 +2154,7 @@ const saveRC1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRC2 = async function (interaction, id,  message, check, item) {
+const saveRC2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2128,7 +2173,7 @@ const saveRC2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2151,6 +2196,7 @@ const saveRC2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rc2") {
                 if(check.area === 2) {
@@ -2169,6 +2215,7 @@ const saveRC2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2197,7 +2244,7 @@ const saveRC2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRC3 = async function (interaction, id,  message, check, item) {
+const saveRC3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2216,7 +2263,7 @@ const saveRC3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2239,6 +2286,7 @@ const saveRC3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rc3") {
                 if(check.area === 2) {
@@ -2257,6 +2305,7 @@ const saveRC3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2285,7 +2334,7 @@ const saveRC3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRC4 = async function (interaction, id,  message, check, item) {
+const saveRC4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2304,7 +2353,7 @@ const saveRC4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2327,6 +2376,7 @@ const saveRC4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rc4") {
                 home.C_DATA.RC4 = false;
@@ -2336,6 +2386,7 @@ const saveRC4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2355,7 +2406,7 @@ const saveRC4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRD1 = async function (interaction, id,  message, check, item) {
+const saveRD1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2374,7 +2425,7 @@ const saveRD1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2397,6 +2448,7 @@ const saveRD1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rd1") {
                 if(check.area === 2) {
@@ -2415,6 +2467,7 @@ const saveRD1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2443,7 +2496,7 @@ const saveRD1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRD2 = async function (interaction, id,  message, check, item) {
+const saveRD2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2462,7 +2515,7 @@ const saveRD2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2485,6 +2538,7 @@ const saveRD2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rd2") {
                 if(check.area === 2) {
@@ -2503,6 +2557,7 @@ const saveRD2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2531,7 +2586,7 @@ const saveRD2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRD3 = async function (interaction, id,  message, check, item) {
+const saveRD3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2550,7 +2605,7 @@ const saveRD3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2573,6 +2628,7 @@ const saveRD3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rd3") {
                 if(check.area === 2) {
@@ -2591,6 +2647,7 @@ const saveRD3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2619,7 +2676,7 @@ const saveRD3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveRD4 = async function (interaction, id,  message, check, item) {
+const saveRD4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2638,7 +2695,7 @@ const saveRD4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2661,6 +2718,7 @@ const saveRD4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_rd4") {
                 home.D_DATA.RD4 = false;
@@ -2670,6 +2728,7 @@ const saveRD4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2691,7 +2750,7 @@ const saveRD4 = async function (interaction, id,  message, check, item) {
     
 };
 
-const saveL1 = async function (interaction, id,  message, check, item) {
+const saveL1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2710,7 +2769,7 @@ const saveL1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2734,6 +2793,7 @@ const saveL1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_l1") {
                 if(check.area === 2) {
@@ -2749,6 +2809,7 @@ const saveL1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2774,7 +2835,7 @@ const saveL1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveL2 = async function (interaction, id,  message, check, item) {
+const saveL2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2793,7 +2854,7 @@ const saveL2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2818,6 +2879,7 @@ const saveL2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_l2") {
                 if(check.area === 2) {
@@ -2833,6 +2895,7 @@ const saveL2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2858,7 +2921,7 @@ const saveL2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveL3 = async function (interaction, id,  message, check, item) {
+const saveL3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2877,7 +2940,7 @@ const saveL3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2901,6 +2964,7 @@ const saveL3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_l3") {
                 if(check.area === 2) {
@@ -2916,6 +2980,7 @@ const saveL3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -2941,7 +3006,7 @@ const saveL3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveL4 = async function (interaction, id,  message, check, item) {
+const saveL4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -2960,7 +3025,7 @@ const saveL4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -2985,6 +3050,7 @@ const saveL4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_l4") {
                 home.WALL_DATA.L4 = false;
@@ -2993,6 +3059,7 @@ const saveL4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3011,7 +3078,7 @@ const saveL4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveR1 = async function (interaction, id,  message, check, item) {
+const saveR1 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3030,7 +3097,7 @@ const saveR1 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3055,6 +3122,7 @@ const saveR1 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_r1") {
                 if(check.area === 2) {
@@ -3070,6 +3138,7 @@ const saveR1 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3095,7 +3164,7 @@ const saveR1 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveR2 = async function (interaction, id,  message, check, item) {
+const saveR2 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3114,7 +3183,7 @@ const saveR2 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3138,6 +3207,7 @@ const saveR2 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_r2") {
                 if(check.area === 2) {
@@ -3153,6 +3223,7 @@ const saveR2 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3178,7 +3249,7 @@ const saveR2 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveR3 = async function (interaction, id,  message, check, item) {
+const saveR3 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3197,7 +3268,7 @@ const saveR3 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3221,6 +3292,7 @@ const saveR3 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_r3") {
                 if(check.area === 2) {
@@ -3236,6 +3308,7 @@ const saveR3 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3261,7 +3334,7 @@ const saveR3 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveR4 = async function (interaction, id,  message, check, item) {
+const saveR4 = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3280,7 +3353,7 @@ const saveR4 = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3305,6 +3378,7 @@ const saveR4 = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_r4") {
                 home.WALL_DATA.R4 = false;
@@ -3313,6 +3387,7 @@ const saveR4 = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3331,7 +3406,7 @@ const saveR4 = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveFLOOR = async function (interaction, id,  message, check, item) {
+const saveFLOOR = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3350,7 +3425,7 @@ const saveFLOOR = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3373,6 +3448,7 @@ const saveFLOOR = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_floor") {
                 // place floor
@@ -3382,6 +3458,7 @@ const saveFLOOR = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3400,7 +3477,7 @@ const saveFLOOR = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const saveTILE = async function (interaction, id,  message, check, item) {
+const saveTILE = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3419,7 +3496,7 @@ const saveTILE = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3442,6 +3519,7 @@ const saveTILE = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_tile") {
                 // place floor
@@ -3451,6 +3529,7 @@ const saveTILE = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }
@@ -3469,7 +3548,7 @@ const saveTILE = async function (interaction, id,  message, check, item) {
     return;
 };
 
-const chack_fish = async function (interaction, id,  message, check, item) {
+const chack_fish = async function (interaction, id,  message, check, item, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const button = new ActionRowBuilder()
@@ -3488,7 +3567,7 @@ const chack_fish = async function (interaction, id,  message, check, item) {
     await interaction.editReply({ content: "Save or Exit?", components: [button], ephemeral: true });
 
     let filter = (m) => m.user.id === interaction.user.id;
-    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 8000 });
+    let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 0 });
 
     const home = await GHouse.findOne({ guild: interaction.guild.id, user: interaction.user.id });
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -3508,6 +3587,7 @@ const chack_fish = async function (interaction, id,  message, check, item) {
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})
                 await interaction.client.questEdit(interaction);
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             } else if (menu.customId === "exit_ra2") {
                 if(check.area === 2) {
@@ -3526,6 +3606,7 @@ const chack_fish = async function (interaction, id,  message, check, item) {
 
                 interaction.editReply({ content: "Your cancel edit the house.", files: [], components: [], ephemeral: true}) 
 
+                delete pendingEditHouseCommands[interaction.user.id];
                 collector.stop();
             }
         }

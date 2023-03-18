@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, AttachmentBuild
 const { editFloor } = require("../edit/floor.js")
 const GInv = require("../../settings/models/inventory.js");
 
-const selectFloor = async (client, interaction, ) => {
+const selectFloor = async (client, interaction, pendingEditHouseCommands ) => {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -47,7 +47,7 @@ const selectFloor = async (client, interaction, ) => {
 
                 const item = inv.item.find(x => x.id === directory);
 
-                editFloor(client, interaction,  item.name, item.type, item.id);
+                editFloor(client, interaction,  item.name, item.type, item.id, pendingEditHouseCommands);
                 await collector.stop();
             }
         }

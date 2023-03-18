@@ -13,7 +13,7 @@ const { saveLA1, saveLA2, saveLA3, saveLA4,
     saveRC1, saveRC2, saveRC3, saveRC4, 
     saveRD1, saveRD2, saveRD3, saveRD4,} = require("../../structures/edit/confirm.js");
 
-const editFurnitureAR = async function (client, interaction,  item, type, id, side) {
+const editFurnitureAR = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -120,14 +120,14 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.LA1 = true
                         home.A_DATA.RA1 = true
-                        home.A_DATA.LA1I = check.name;
+                        home.A_DATA.RA1I = check.name;
                         /// save A2
                         home.B_DATA.LB1 = true
                         home.B_DATA.RB1 = true
                     } else {
                         home.A_DATA.LA1 = true
                         home.A_DATA.RA1 = true
-                        home.A_DATA.LA1I = check.name;
+                        home.A_DATA.RA1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -136,7 +136,9 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRA1(interaction, id,  message, check, item);
+                        
+                    await saveRA1(interaction, id,  message, check, item , pendingEditHouseCommands);
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     });
                     collector.stop();
                 } else if (directory === "place_ratwo") {
@@ -154,14 +156,14 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.LA2 = true
                         home.A_DATA.RA2 = true
-                        home.A_DATA.LA2I = check.name;
+                        home.A_DATA.RA2I = check.name;
                         /// save A3
                         home.B_DATA.LB2 = true
                         home.B_DATA.RB2 = true
                     } else {
                         home.A_DATA.LA2 = true
                         home.A_DATA.RA2 = true
-                        home.A_DATA.LA2I = check.name;
+                        home.A_DATA.RA2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -170,7 +172,8 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRA2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRA2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rathree") {
@@ -189,14 +192,14 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.LA3 = true
                         home.A_DATA.RA3 = true
-                        home.A_DATA.LA3I = check.name;
+                        home.A_DATA.RA3I = check.name;
                         // save A4
                         home.B_DATA.LB3 = true
                         home.B_DATA.RB3 = true
                     } else {
                         home.A_DATA.LA3 = true
                         home.A_DATA.RA3 = true
-                        home.A_DATA.LA3I = check.name;
+                        home.A_DATA.RA3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -205,7 +208,8 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRA3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRA3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rafour") {
@@ -224,14 +228,14 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.LA4 = true
                         home.A_DATA.RA4 = true
-                        home.A_DATA.LA4I = check.name;
+                        home.A_DATA.RA4I = check.name;
                         // save A4
                         home.B_DATA.LB4 = true
                         home.B_DATA.RB4 = true
                     } else {
                         home.A_DATA.LA4 = true
                         home.A_DATA.RA4 = true
-                        home.A_DATA.LA4I = check.name;
+                        home.A_DATA.RA4I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -240,7 +244,8 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRA4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRA4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -251,13 +256,13 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
             if(menu.customId === "ra_one") {
               //
             } else if (menu.customId === "rb_two") {
-                editFurnitureBR(client, interaction,  item, type, id, side);
+                editFurnitureBR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rc_three") {
-                editFurnitureCR(client, interaction,  item, type, id, side);
+                editFurnitureCR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rd_four") {
-                editFurnitureDR(client, interaction,  item, type, id, side);
+                editFurnitureDR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -276,7 +281,7 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
     return;
 }
 
-const editFurnitureBR = async function (client, interaction,  item, type, id, side) {
+const editFurnitureBR = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -384,14 +389,14 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.LB1 = true
                         home.B_DATA.RB1 = true
-                        home.B_DATA.LB1I = check.name;
+                        home.B_DATA.RB1I = check.name;
                         /// save A2
                         home.C_DATA.LC1 = true
                         home.C_DATA.RC1 = true
                     } else {
                         home.B_DATA.LB1 = true
                         home.B_DATA.RB1 = true
-                        home.B_DATA.LB1I = check.name;
+                        home.B_DATA.RB1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -400,7 +405,8 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRB1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRB1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rbtwo") {
@@ -418,14 +424,14 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.LB2 = true
                         home.B_DATA.RB2 = true
-                        home.B_DATA.LB2I = check.name;
+                        home.B_DATA.RB2I = check.name;
                         /// save A3
                         home.C_DATA.LC2 = true
                         home.C_DATA.RC2 = true
                     } else {
                         home.B_DATA.LB2 = true
                         home.B_DATA.RB2 = true
-                        home.B_DATA.LB2I = check.name;
+                        home.B_DATA.RB2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -434,7 +440,8 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRB2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRB2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rbthree") {
@@ -453,14 +460,14 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.LB3 = true
                         home.B_DATA.RB3 = true
-                        home.B_DATA.LB3I = check.name;
+                        home.B_DATA.RB3I = check.name;
                         // save A4
                         home.C_DATA.LC3 = true
                         home.C_DATA.RC3 = true
                     } else {
                         home.B_DATA.LB3 = true
                         home.B_DATA.RB3 = true
-                        home.B_DATA.LB3I = check.name;
+                        home.B_DATA.RB3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -469,7 +476,8 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRB3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRB3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rbfour") {
@@ -488,14 +496,14 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.LB4 = true
                         home.B_DATA.RB4 = true
-                        home.B_DATA.LB4I = check.name;
+                        home.B_DATA.RB4I = check.name;
                         // save A4
                         home.C_DATA.LC4 = true
                         home.C_DATA.RC4 = true
                     } else {
                         home.B_DATA.LB4 = true
                         home.B_DATA.RB4 = true
-                        home.B_DATA.LB4I = check.name;
+                        home.B_DATA.RB4I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -504,7 +512,8 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRB4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRB4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -512,15 +521,15 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "ra_one") {
-                editFurnitureAR(client, interaction,  item, type, id, side);
+                editFurnitureAR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rb_two") {
                 //
             } else if (menu.customId === "rc_three") {
-                editFurnitureCR(client, interaction,  item, type, id, side);
+                editFurnitureCR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rd_four") {
-                editFurnitureDR(client, interaction,  item, type, id, side);
+                editFurnitureDR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -539,7 +548,7 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
    return;
 }
 
-const editFurnitureCR = async function (client, interaction,  item, type, id, side) {
+const editFurnitureCR = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -647,14 +656,14 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.LC1 = true
                         home.C_DATA.RC1 = true
-                        home.C_DATA.LC1I = check.name;
+                        home.C_DATA.RC1I = check.name;
                         /// save A2
                         home.D_DATA.LD1 = true
                         home.D_DATA.RD1 = true
                     } else {
                         home.C_DATA.LC1 = true
                         home.C_DATA.RC1 = true
-                        home.C_DATA.LC1I = check.name;
+                        home.C_DATA.RC1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -663,7 +672,8 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRC1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRC1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rctwo") {
@@ -682,14 +692,14 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.LC2 = true
                         home.C_DATA.RC2 = true
-                        home.C_DATA.LC2I = check.name;
+                        home.C_DATA.RC2I = check.name;
                         /// save A3
                         home.D_DATA.LD2 = true
                         home.D_DATA.RD2 = true
                     } else {
                         home.C_DATA.LC2 = true
                         home.C_DATA.RC2 = true
-                        home.C_DATA.LC2I = check.name;
+                        home.C_DATA.RC2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -698,7 +708,8 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRC2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRC2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rcthree") {
@@ -717,14 +728,14 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.LC3 = true
                         home.C_DATA.RC3 = true
-                        home.C_DATA.LC3I = check.name;
+                        home.C_DATA.RC3I = check.name;
                         // save A4
                         home.D_DATA.LD3 = true
                         home.D_DATA.RD3 = true
                     } else {
                         home.C_DATA.LC3 = true
                         home.C_DATA.RC3 = true
-                        home.C_DATA.LC3I = check.name;
+                        home.C_DATA.RC3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -733,7 +744,8 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRC3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRC3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rcfour") {
@@ -752,14 +764,14 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.LC4 = true
                         home.C_DATA.RC4 = true
-                        home.C_DATA.LC4I = check.name;
+                        home.C_DATA.RC4I = check.name;
                         // save A4
                         home.D_DATA.LD4 = true
                         home.D_DATA.RD4 = true
                     } else {
                         home.C_DATA.LC4 = true
                         home.C_DATA.RC4 = true
-                        home.C_DATA.LC4I = check.name;
+                        home.C_DATA.RC4I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -768,7 +780,8 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRC4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRC4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -776,15 +789,15 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "ra_one") {
-                editFurnitureAR(client, interaction,  item, type, id, side);
+                editFurnitureAR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rb_two") {
-                editFurnitureBR(client, interaction,  item, type, id, side);
+                editFurnitureBR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rc_three") {
                 //
             } else if (menu.customId === "rd_four") {
-                editFurnitureDR(client, interaction,  item, type, id, side);
+                editFurnitureDR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -803,7 +816,7 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
    return;
 }
 
-const editFurnitureDR = async function (client, interaction,  item, type, id, side) {
+const editFurnitureDR = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -909,7 +922,7 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.D_DATA.LD1 = true;
                     home.D_DATA.RD1 = true;
-                    home.D_DATA.LD1I = check.name;
+                    home.D_DATA.RD1I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -917,7 +930,8 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRD1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRD1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rdtwo") {
@@ -934,7 +948,7 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.D_DATA.LD2 = true;
                     home.D_DATA.RD2 = true;
-                    home.D_DATA.LD2I = check.name;
+                    home.D_DATA.RD2I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -942,7 +956,8 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRD2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRD2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rdthree") {
@@ -959,7 +974,7 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.D_DATA.LD3 = true;
                     home.D_DATA.RD3 = true;
-                    home.D_DATA.LD3I = check.name;
+                    home.D_DATA.RD3I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -967,7 +982,8 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRD3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRD3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_rdfour") {
@@ -984,7 +1000,7 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.D_DATA.LD4 = true;
                     home.D_DATA.RD4 = true;
-                    home.D_DATA.LD4I = check.name;
+                    home.D_DATA.RD4I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -992,7 +1008,8 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveRD4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveRD4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -1000,13 +1017,13 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "ra_one") {
-                editFurnitureAR(client, interaction,  item, type, id, side);
+                editFurnitureAR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rb_two") {
-                editFurnitureBR(client, interaction,  item, type, id, side);
+                editFurnitureBR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rc_three") {
-                editFurnitureCR(client, interaction,  item, type, id, side);
+                editFurnitureCR(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "rd_four") {
                 //
@@ -1027,7 +1044,7 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
    return;
 }
 
-const editFurnitureAL = async function (client, interaction,  item, type, id, side) {
+const editFurnitureAL = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -1134,14 +1151,14 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.RA1 = true
                         home.A_DATA.LA1 = true
-                        home.A_DATA.RA1I = check.name;
+                        home.A_DATA.LA1I = check.name;
                         /// save A2
                         home.A_DATA.RA2 = true
                         home.A_DATA.LA2 = true
                     } else {
                         home.A_DATA.RA1 = true
                         home.A_DATA.LA1 = true
-                        home.A_DATA.RA1I = check.name;
+                        home.A_DATA.LA1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1150,7 +1167,9 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLA1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLA1(interaction, id,  message, check, item , pendingEditHouseCommands);
+
                     });
                     collector.stop();
                 } else if (directory === "place_latwo") {
@@ -1168,14 +1187,14 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.RA2 = true
                         home.A_DATA.LA2 = true
-                        home.A_DATA.RA2I = check.name;
+                        home.A_DATA.LA2I = check.name;
                         /// save A3
                         home.A_DATA.RA3 = true
                         home.A_DATA.LA3 = true
                     } else {
                         home.A_DATA.RA2 = true
                         home.A_DATA.LA2 = true
-                        home.A_DATA.RA2I = check.name;
+                        home.A_DATA.LA2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1184,7 +1203,8 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLA2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLA2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lathree") {
@@ -1203,14 +1223,14 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.A_DATA.RA3 = true
                         home.A_DATA.LA3 = true
-                        home.A_DATA.RA3I = check.name;
+                        home.A_DATA.LA3I = check.name;
                         // save A4
                         home.A_DATA.RA4 = true
                         home.A_DATA.LA4 = true
                     } else {
                         home.A_DATA.RA3 = true
                         home.A_DATA.LA3 = true
-                        home.A_DATA.RA3I = check.name;
+                        home.A_DATA.LA3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1219,7 +1239,8 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLA3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLA3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lafour") {
@@ -1236,7 +1257,7 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.A_DATA.RA4 = true;
                     home.A_DATA.LA4 = true;
-                    home.A_DATA.RA4I = check.name;
+                    home.A_DATA.LA4I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -1244,7 +1265,8 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLA4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLA4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -1255,13 +1277,13 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
             if(menu.customId === "la_one") {
               //
             } else if (menu.customId === "lb_two") {
-                editFurnitureBL(client, interaction,  item, type, id, side);
+                editFurnitureBL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lc_three") {
-                editFurnitureCL(client, interaction,  item, type, id, side);
+                editFurnitureCL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "ld_four") {
-                editFurnitureDL(client, interaction,  item, type, id, side);
+                editFurnitureDL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -1280,7 +1302,7 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
     return;
 }
 
-const editFurnitureBL = async function (client, interaction,  item, type, id, side) {
+const editFurnitureBL = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -1388,14 +1410,14 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.RB1 = true
                         home.B_DATA.LB1 = true
-                        home.B_DATA.RB1I = check.name;
+                        home.B_DATA.LB1I = check.name;
                         /// save A2
                         home.B_DATA.RB2 = true
                         home.B_DATA.LB2 = true
                     } else {
                         home.B_DATA.RB1 = true
                         home.B_DATA.LB1 = true
-                        home.B_DATA.RB1I = check.name;
+                        home.B_DATA.LB1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1404,7 +1426,8 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLB1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLB1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lbtwo") {
@@ -1422,14 +1445,14 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.RB2 = true
                         home.B_DATA.LB2 = true
-                        home.B_DATA.RB2I = check.name;
+                        home.B_DATA.LB2I = check.name;
                         /// save A3
                         home.B_DATA.RB3 = true
                         home.B_DATA.LB3 = true
                     } else {
                         home.B_DATA.RB2 = true
                         home.B_DATA.LB2 = true
-                        home.B_DATA.RB2I = check.name;
+                        home.B_DATA.LB2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1438,7 +1461,8 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLB2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLB2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lbthree") {
@@ -1457,14 +1481,14 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.B_DATA.RB3 = true
                         home.B_DATA.LB3 = true
-                        home.B_DATA.RB3I = check.name;
+                        home.B_DATA.LB3I = check.name;
                         // save A4
                         home.B_DATA.RB4 = true
                         home.B_DATA.LB4 = true
                     } else {
                         home.B_DATA.RB3 = true
                         home.B_DATA.LB3 = true
-                        home.B_DATA.RB3I = check.name;
+                        home.B_DATA.LB3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1473,7 +1497,8 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLB3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLB3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lbfour") {
@@ -1490,7 +1515,7 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.B_DATA.RB4 = true;
                     home.B_DATA.LB4 = true;
-                    home.B_DATA.RB4I = check.name;
+                    home.B_DATA.LB4I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -1498,7 +1523,8 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLB4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLB4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -1506,15 +1532,15 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "la_one") {
-                editFurnitureAL(client, interaction,  item, type, id, side);
+                editFurnitureAL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lb_two") {
                 //
             } else if (menu.customId === "lc_three") {
-                editFurnitureCL(client, interaction,  item, type, id, side);
+                editFurnitureCL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "ld_four") {
-                editFurnitureDL(client, interaction,  item, type, id, side);
+                editFurnitureDL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -1533,7 +1559,7 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
    return;
 }
 
-const editFurnitureCL = async function (client, interaction,  item, type, id, side) {
+const editFurnitureCL = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -1641,14 +1667,14 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.RC1 = true
                         home.C_DATA.LC1 = true
-                        home.C_DATA.RC1I = check.name;
+                        home.C_DATA.LC1I = check.name;
                         /// save A2
                         home.C_DATA.RC2 = true
                         home.C_DATA.LC2 = true
                     } else {
                         home.C_DATA.RC1 = true
                         home.C_DATA.LC1 = true
-                        home.C_DATA.RC1I = check.name;
+                        home.C_DATA.LC1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1657,7 +1683,8 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLC1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLC1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lctwo") {
@@ -1676,14 +1703,14 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.RC2 = true
                         home.C_DATA.LC2 = true
-                        home.C_DATA.RC2I = check.name;
+                        home.C_DATA.LC2I = check.name;
                         /// save A3
                         home.C_DATA.RC3 = true
                         home.C_DATA.LC3 = true
                     } else {
                         home.C_DATA.RC2 = true
                         home.C_DATA.LC2 = true
-                        home.C_DATA.RC2I = check.name;
+                        home.C_DATA.LC2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1692,7 +1719,8 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLC2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLC2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lcthree") {
@@ -1711,14 +1739,14 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.C_DATA.RC3 = true
                         home.C_DATA.LC3 = true
-                        home.C_DATA.RC3I = check.name;
+                        home.C_DATA.LC3I = check.name;
                         // save A4
                         home.C_DATA.RC4 = true
                         home.C_DATA.LC4 = true
                     } else {
                         home.C_DATA.RC3 = true
                         home.C_DATA.LC3 = true
-                        home.C_DATA.RC3I = check.name;
+                        home.C_DATA.LC3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1727,7 +1755,8 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLC3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLC3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_lcfour") {
@@ -1744,7 +1773,7 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.C_DATA.RC4 = true;
                     home.C_DATA.LC4 = true;
-                    home.C_DATA.RC4I = check.name;
+                    home.C_DATA.LC4I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -1752,7 +1781,8 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLC4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLC4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -1760,15 +1790,15 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "la_one") {
-                editFurnitureAL(client, interaction,  item, type, id, side);
+                editFurnitureAL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lb_two") {
-                editFurnitureBL(client, interaction,  item, type, id, side);
+                editFurnitureBL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lc_three") {
                 //
             } else if (menu.customId === "ld_four") {
-                editFurnitureDL(client, interaction,  item, type, id, side);
+                editFurnitureDL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             }
         }
@@ -1787,7 +1817,7 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
    return;
 }
 
-const editFurnitureDL = async function (client, interaction,  item, type, id, side) {
+const editFurnitureDL = async function (client, interaction,  item, type, id, side, pendingEditHouseCommands) {
     if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
     const canvas = Canvas.createCanvas(300, 300);
@@ -1894,14 +1924,14 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.D_DATA.RD1 = true
                         home.D_DATA.LD1 = true
-                        home.D_DATA.RD1I = check.name;
+                        home.D_DATA.LD1I = check.name;
                         /// save A2
                         home.D_DATA.RD2 = true
                         home.D_DATA.LD2 = true
                     } else {
                         home.D_DATA.RD1 = true
                         home.D_DATA.LD1 = true
-                        home.D_DATA.RD1I = check.name;
+                        home.D_DATA.LD1I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1910,7 +1940,8 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLD1(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLD1(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_ldtwo") {
@@ -1927,14 +1958,14 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.D_DATA.RD2 = true
                         home.D_DATA.LD2 = true
-                        home.D_DATA.RD2I = check.name;
+                        home.D_DATA.LD2I = check.name;
                         /// save A3
                         home.D_DATA.RD3 = true
                         home.D_DATA.LD3 = true
                     } else {
                         home.D_DATA.RD2 = true
                         home.D_DATA.LD2 = true
-                        home.D_DATA.RD2I = check.name;
+                        home.D_DATA.LD2I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1943,7 +1974,8 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLD2(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLD2(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_ldthree") {
@@ -1962,14 +1994,14 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     if(check.area === 2) {
                         home.D_DATA.RD3 = true
                         home.D_DATA.LD3 = true
-                        home.D_DATA.RD3I = check.name;
+                        home.D_DATA.LD3I = check.name;
                         // save A4
                         home.D_DATA.RD4 = true
                         home.D_DATA.LD4 = true
                     } else {
                         home.D_DATA.RD3 = true
                         home.D_DATA.LD3 = true
-                        home.D_DATA.RD3I = check.name;
+                        home.D_DATA.LD3I = check.name;
                     }
                     await home.save();
                     //rebuild canvas sort 4-1
@@ -1978,7 +2010,8 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLD3(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLD3(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 } else if (directory === "place_ldfour") {
@@ -1995,7 +2028,7 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     // save and replace
                     home.D_DATA.RD4 = true;
                     home.D_DATA.LD4 = true;
-                    home.D_DATA.RD4I = check.name;
+                    home.D_DATA.LD4I = check.name;
                     await home.save();
                     //rebuild canvas sort 4-1
                     await replaceHouse(client, interaction, ctx, home, check)
@@ -2003,7 +2036,8 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     const build = new AttachmentBuilder(await canvas.encode("png"), { name: `${item}_${side}.png` })
 
                     await interaction.editReply({ embeds: [], components: [], files: [build], ephemeral: true }).then(async (message) => {
-                        await saveLD4(interaction, id,  message, check, item);
+                        pendingEditHouseCommands[interaction.user.id] = true;
+                        await saveLD4(interaction, id,  message, check, item , pendingEditHouseCommands);
                     });
                     collector.stop();
                 }
@@ -2011,13 +2045,13 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
         } else if(menu.isButton()) {
             await menu.deferUpdate();
             if(menu.customId === "la_one") {
-                editFurnitureAL(client, interaction,  item, type, id, side);
+                editFurnitureAL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lb_two") {
-                editFurnitureBL(client, interaction,  item, type, id, side);
+                editFurnitureBL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "lc_three") {
-                editFurnitureCL(client, interaction,  item, type, id, side);
+                editFurnitureCL(client, interaction,  item, type, id, side, pendingEditHouseCommands);
                 collector.stop();
             } else if (menu.customId === "ld_four") {
                 //

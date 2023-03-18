@@ -7,6 +7,8 @@ const GHome = require("../../settings/models/house.js");
 const { selectWallSide } = require("../../structures/select/wallpaper.js");
 const { selectWallSide2 } = require("../../structures/select/wallpaper2.js");
 const delay = require("delay");
+// create pendingEditHouseCommands 
+const pendingEditHouseCommands = {};
 
 module.exports = {
     name: ["house", "edit"],
@@ -15,6 +17,13 @@ module.exports = {
     run: async (client, interaction) => {
 
         await interaction.reply({ content: "Loading..." })
+
+        // ถ้าใน pendingEditHouseCommands มีคนที่เรียกใช้คำสั่งนี้อยู่แล้ว ให้ส่งข้อความแจ้งเตือนและ return
+        if (pendingEditHouseCommands[interaction.user.id]) {
+            await interaction.editReply({ content: "You are already editing your house. Please wait until you finish editing your house." })
+            return;
+        }
+
 
         const canvas = Canvas.createCanvas(300, 300);
         const ctx = canvas.getContext("2d");
@@ -97,19 +106,20 @@ module.exports = {
 
                         if (directory === "wall2") {
                             // Run callback furniture
-                            selectWallSide2(client, interaction, );
+                            // add user to pendingEditHouseCommands 
+                            selectWallSide2(client, interaction, pendingEditHouseCommands );
                             collector.stop();
                         } else if (directory === "wall") {
                             // Run callback wallpaper
-                            selectWallSide(client, interaction, );
+                            selectWallSide(client, interaction, pendingEditHouseCommands );
                             collector.stop();
                         }  else if (directory === "tile") {
                             // Run callback floor
-                            selectTile(client, interaction, );
+                            selectTile(client, interaction, pendingEditHouseCommands );
                             collector.stop();
                         } else if (directory === "floor") {
                             // Run callback floor
-                            selectFloor(client, interaction, );
+                            selectFloor(client, interaction, pendingEditHouseCommands );
                             collector.stop();
                         } else if (directory === "reset") {
                             const home = await GHome.findOne({ guild: interaction.guild.id, user: interaction.user.id });
@@ -127,6 +137,7 @@ module.exports = {
                 const timed = new EmbedBuilder()
                     .setDescription(`Time is Ended!`)
                     .setColor(client.color)
+
 
                     interaction.editReply({ embeds: [timed], components: [] , ephemeral: true });
             }

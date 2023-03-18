@@ -9,6 +9,7 @@ module.exports = {
             critical: 10,
             durability: 100,
             level_upgade: 1,
+            use_stamina: 10,
             price: 10000,
             level: 1
         },
@@ -21,6 +22,7 @@ module.exports = {
             critical: 100,
             durability: 100,
             level_upgade: 1,
+            use_stamina: 10,
             price: 100,
             level: 1
         },
@@ -35,6 +37,7 @@ module.exports = {
             critical: 10,
             durability: 100,
             level_upgade: 1,
+            use_stamina: 10,
             price: 10000,
             level: 1
         },
@@ -49,6 +52,7 @@ module.exports = {
             critical: 10,
             durability: 100,
             level_upgade: 1,
+            use_stamina: 10,
             price: 10000,
             level: 1
         },

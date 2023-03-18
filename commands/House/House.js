@@ -21,6 +21,9 @@ module.exports = {
         const background = await Canvas.loadImage(`${home_img}`);
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
+        const windows = await Canvas.loadImage("./assests/windows.png");
+        ctx.drawImage(windows, 0, 0, canvas.width, canvas.height);
+
         if (home.six_clock === true) {
             const six_clock = await Canvas.loadImage("./assests/windows_mooning.png");
             ctx.drawImage(six_clock, 0, 0, canvas.width, canvas.height);

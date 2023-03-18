@@ -177,6 +177,7 @@ for (let i = 0; i < attcs.length; i++) {
                     critical: item.critical,
                     durability : item.durability,
                     level_upgade: item.level_upgade,
+                    use_stamina: item.use_stamina,
                     price: item.price,
                     level: item.level,
                     id: GenID
@@ -213,6 +214,7 @@ for (let i = 0; i < attcs.length; i++) {
                     critical: item.critical,
                     durability: item.durability,
                     level_upgade: item.level_upgade,
+                    use_stamina: item.use_stamina,
                     price: item.price,
                     level: item.level,
                     id: GenID
@@ -249,6 +251,7 @@ for (let i = 0; i < attcs.length; i++) {
                     critical: item.critical,
                     durability: item.durability,
                     level_upgade: item.level_upgade,
+                    use_stamina: item.use_stamina,
                     price: item.price,
                     level: item.level,
                     id: GenID

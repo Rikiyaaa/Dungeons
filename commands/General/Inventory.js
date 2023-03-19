@@ -177,6 +177,7 @@ collector.on('collect', async (menu,) => {
                 const sFruit = [];
                 const sItem = [];
                 const sCandy = [];
+                const sFlower = [];
         
                 for (let i = 0; i < result.length; i++) {
                     const type = result[i].type;
@@ -196,6 +197,8 @@ collector.on('collect', async (menu,) => {
                         sCandy.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
                     } else if (type == "food") {
                         sFood.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
+                    } else if (type == "flower") {
+                        sFlower.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
                     }
                 }
         
@@ -211,6 +214,8 @@ collector.on('collect', async (menu,) => {
                         { name: "Floor", value: `${(sFloor.join("\n") || "No items!")}` , inline: false },
                         { name: "Furniture", value: `${(sFur.join("\n") || "No items!")}`, inline: false },
                         { name: "Candy", value: `${(sCandy.join("\n") || "No items!")}`, inline: false },
+                        { name: "Flower", value: `${(sFlower.join("\n") || "No items!")}`, inline: false },
+
                     )
                     .setColor(client.color)
                 await interaction.editReply({ embeds: [embed], components: [row, button], ephemeral: true });
@@ -388,6 +393,7 @@ collector.on('collect', async (menu,) => {
         const sFruit = [];
         const sItem = [];
         const sCandy = [];
+        const sFlower = [];
 
         for (let i = 0; i < result.length; i++) {
             const type = result[i].type;
@@ -407,6 +413,8 @@ collector.on('collect', async (menu,) => {
                 sCandy.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
             } else if (type == "food") {
                 sFood.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
+            } else if (type == "flower") {
+                sFlower.push(`${toOppositeCase(result[i].name)} (x${result[i].count})`)
             }
         }
 
@@ -422,6 +430,8 @@ collector.on('collect', async (menu,) => {
                 { name: "Floor", value: `${(sFloor.join("\n") || "No items!")}` , inline: false },
                 { name: "Furniture", value: `${(sFur.join("\n") || "No items!")}`, inline: false },
                 { name: "Candy", value: `${(sCandy.join("\n") || "No items!")}`, inline: false },
+                { name: "Flower", value: `${(sFlower.join("\n") || "No items!")}`, inline: false },
+
             )
             .setColor(client.color)
 

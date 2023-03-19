@@ -7,6 +7,7 @@ const { shopFloor } = require("../../structures/shop/floor.js");
 const { shopFood } = require("../../structures/shop/food.js");
 const { shopCandy } = require("../../structures/shop/candy.js");
 const { shopTile } = require("../../structures/shop/tile.js");
+const { shopFlower } = require("../../structures/shop/flower.js");
 
 module.exports = {
     name: ["house", "shop"], // Base Commands! // Sub Commands!
@@ -56,7 +57,12 @@ module.exports = {
                         label: "6️⃣ Candy",
                         description: "Shop your Candy",
                         value: "candy"
-                    }
+                    },
+                    {
+                        label: "7️⃣ Flower",
+                        description: "Shop your Flower",
+                        value: "flower"
+                    },
                 ])
             ])
 
@@ -103,7 +109,10 @@ module.exports = {
                     } else if (directory === "candy") {
                         shopCandy(client, interaction, msg);
                         collector.stop();
-                    }
+                    } else if (directory === "flower") {
+                        shopFlower(client, interaction, msg);
+                        collector.stop();
+                    } 
                     
                 }
             }

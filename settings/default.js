@@ -110,6 +110,16 @@ module.exports = {
         },
     ],
 
+    flower: [
+        {
+            name: "rose",
+            type: "flower",
+            price: 100,
+            level: 1,
+            flower: 10,
+        },
+    ],
+
     tile: [
         {
             name: "wooden",

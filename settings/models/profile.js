@@ -8,6 +8,9 @@ const profile = Schema({
   nickname_request1: Boolean,
   bad_message: Number,
   happy_message: Number,
+  flower: Number,
+  flower_max: Number,
+  relationship: String,
   level: Number,
   money: Number,
   inventory: {

@@ -6,10 +6,22 @@ const GMonter = require("../../settings/models/monter.js");
 const GProfile = require("../../settings/models/cradprofile.js");
 const delay = require("delay"); 
 
+const monter_drop_random = [];
+const pages = [];
+
+const cprofile_function =  [];
+
+const pendingFramCommands = {};
+
 module.exports = { 
     name: ["fram"],
     description: "fram",
     run: async (client, interaction) => {
+
+        if (pendingFramCommands[interaction.user.id]) {
+            await interaction.reply({ content: "คุณกำลังใช้คำสั่งนี้อยู่...", ephemeral: true });
+            return;
+        }
 
         const waitembed = new EmbedBuilder()
         .setColor("#bdc6e9")
@@ -17,7 +29,34 @@ module.exports = {
 
         await interaction.reply({ embeds: [waitembed], ephemeral: true });
 
-          const cprofile = await GProfile.findOne({ user: interaction.user.id });
+        const cprofile = await GProfile.findOne({ user: interaction.user.id });
+
+        cprofile_function.push(cprofile.luck)
+        console.log(cprofile_function)
+
+        if (cprofile.speed == 0) {
+            await delay(10000);
+        } else if (cprofile.speed >= 10) {
+            await delay(9000);
+        } else if (cprofile.speed >= 20) {
+            await delay(8000);
+        } else if (cprofile.speed >= 30) {
+            await delay(7000);
+        } else if (cprofile.speed >= 40) {
+            await delay(6000);
+        } else if (cprofile.speed >= 50) {
+            await delay(5000);
+        } else if (cprofile.speed >= 60) {
+            await delay(4000);
+        } else if (cprofile.speed >= 70) {
+            await delay(3000);
+        } else if (cprofile.speed >= 80) {
+            await delay(2000);
+        } else if (cprofile.speed >= 90) {
+            await delay(1000);
+        } else if (cprofile.speed >= 100) {
+            await delay(0);
+        }
           
         const profile = await Member.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
@@ -27,7 +66,6 @@ module.exports = {
         .setDescription("คุณต้องรักษาสุขภาพก่อนใช้คำสั่งนี้")
 
         if (cprofile.health <= 0) return interaction.editReply({ embeds: [nohealth], ephemeral: true });
-
 
         const nosword = new EmbedBuilder()
         .setColor("#bdc6e9")
@@ -56,9 +94,26 @@ module.exports = {
         const monter_exp = monter.exp;
         const monter_location = monter.location;
         const monter_location_image = monter.location_image;
-        const monter_drop_name = monter.drop_name;
-        const monter_drop_type = monter.drop_type;
-        const monter_drop_image = monter.drop_image;
+        const monter_drop_name_0 = monter.drop_list[0].name;
+        const monter_drop_type_0 = monter.drop_list[0].type;
+        const monter_drop_rarity_0 = monter.drop_list[0].rarity;
+        const monter_drop_image_0 = monter.drop_list[0].image;
+        const monter_drop_name_1 = monter.drop_list[1].name;
+        const monter_drop_type_1 = monter.drop_list[1].type;
+        const monter_drop_rarity_1 = monter.drop_list[1].rarity;
+        const monter_drop_image_1 = monter.drop_list[1].image;
+        const monter_drop_name_2 = monter.drop_list[2].name;
+        const monter_drop_type_2 = monter.drop_list[2].type;
+        const monter_drop_rarity_2 = monter.drop_list[2].rarity;
+        const monter_drop_image_2 = monter.drop_list[2].image;
+        const monter_drop_name_3 = monter.drop_list[3].name;
+        const monter_drop_type_3 = monter.drop_list[3].type;
+        const monter_drop_rarity_3 = monter.drop_list[3].rarity;
+        const monter_drop_image_3 = monter.drop_list[3].image;
+        const monter_drop_name_4 = monter.drop_list[4].name;
+        const monter_drop_type_4 = monter.drop_list[4].type;
+        const monter_drop_rarity_4 = monter.drop_list[4].rarity;
+        const monter_drop_image_4 = monter.drop_list[4].image;
 
 
             monter_data.name = monter_name_get;
@@ -74,15 +129,40 @@ module.exports = {
             monter_data.location_image = monter_location_image;
             monter_data.drop = [
                 {
-                    name: monter_drop_name,
-                    type: monter_drop_type,
-                    image: monter_drop_image,
-                }
+                    name: monter_drop_name_0,
+                    type: monter_drop_type_0,
+                    rarity: monter_drop_rarity_0,
+                    image: monter_drop_image_0,
+                },
+                {
+                    name: monter_drop_name_1,
+                    type: monter_drop_type_1,
+                    rarity: monter_drop_rarity_1,
+                    image: monter_drop_image_1,
+                },
+                {
+                    name: monter_drop_name_2,
+                    type: monter_drop_type_2,
+                    rarity: monter_drop_rarity_2,
+                    image: monter_drop_image_2,
+                },
+                {
+                    name: monter_drop_name_3,
+                    type: monter_drop_type_3,
+                    rarity: monter_drop_rarity_3,
+                    image: monter_drop_image_3,
+                },
+                {
+                    name: monter_drop_name_4,
+                    type: monter_drop_type_4,
+                    rarity: monter_drop_rarity_4,
+                    image: monter_drop_image_4,
+                },
             ];
     
     
             await monter_data.save();
-
+            monter_drop_random.push(monter_data.drop)
              //ค่า defence ของชุดเกราะ จะเพิ่มเลือดให้ผู้ใส่ ปล ต้องปรับ % ของเลือดใหม่ด้วย
 
              if (cprofile.stamina > 100) 
@@ -220,6 +300,7 @@ module.exports = {
             if(menu.isButton()) {
                 if(menu.customId === "attack") {
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                     const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -1451,11 +1532,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -1475,17 +1552,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
+
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -1522,6 +1806,9 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
+                       
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -1643,7 +1930,6 @@ module.exports = {
                     
                         await interaction.editReply({ embeds: [embed], files: [], components: [row] , ephemeral: true });
                     } 
-
                 } else if (menu.customId === "run") {
                     await menu.deferUpdate();
                     const run = new EmbedBuilder()
@@ -1654,9 +1940,11 @@ module.exports = {
                     await monter_data.deleteOne();
                     cprofile.stamina = cprofile.stamina_max;
                     await cprofile.save();
+                    delete pendingEditHouseCommands[interaction.user.id];
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                       const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -2688,11 +2976,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -2712,18 +2996,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
 
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -2760,6 +3250,8 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -2994,6 +3486,8 @@ module.exports = {
         await interaction.editReply({ embeds: [embed], files: [], components: [row], ephemeral: true  });
         cprofile.stamina = cprofile.stamina_max;
         await cprofile.save();
+        delete pendingEditHouseCommands[interaction.user.id];
+        collector.stop();
             }
         });
         } else if(profile.location == "ที่ราบสูงป่าสีเขียว") {
@@ -3001,7 +3495,7 @@ module.exports = {
         const random = Math.floor(Math.random() * name_monter.length);
         const monter_name = name_monter[random];
 
-        const monter = config.monter[0].green_forest_plains.find(x => x.name === monter_name);
+        const monter = config.monter[0].green_forest_plateau.find(x => x.name === monter_name);
 
         const monter_name_get = monter.name;
         const monter_type = monter.type;
@@ -3014,9 +3508,26 @@ module.exports = {
         const monter_exp = monter.exp;
         const monter_location = monter.location;
         const monter_location_image = monter.location_image;
-        const monter_drop_name = monter.drop_name;
-        const monter_drop_type = monter.drop_type;
-        const monter_drop_image = monter.drop_image;
+        const monter_drop_name_0 = monter.drop_list[0].name;
+        const monter_drop_type_0 = monter.drop_list[0].type;
+        const monter_drop_rarity_0 = monter.drop_list[0].rarity;
+        const monter_drop_image_0 = monter.drop_list[0].image;
+        const monter_drop_name_1 = monter.drop_list[1].name;
+        const monter_drop_type_1 = monter.drop_list[1].type;
+        const monter_drop_rarity_1 = monter.drop_list[1].rarity;
+        const monter_drop_image_1 = monter.drop_list[1].image;
+        const monter_drop_name_2 = monter.drop_list[2].name;
+        const monter_drop_type_2 = monter.drop_list[2].type;
+        const monter_drop_rarity_2 = monter.drop_list[2].rarity;
+        const monter_drop_image_2 = monter.drop_list[2].image;
+        const monter_drop_name_3 = monter.drop_list[3].name;
+        const monter_drop_type_3 = monter.drop_list[3].type;
+        const monter_drop_rarity_3 = monter.drop_list[3].rarity;
+        const monter_drop_image_3 = monter.drop_list[3].image;
+        const monter_drop_name_4 = monter.drop_list[4].name;
+        const monter_drop_type_4 = monter.drop_list[4].type;
+        const monter_drop_rarity_4 = monter.drop_list[4].rarity;
+        const monter_drop_image_4 = monter.drop_list[4].image;
 
 
             monter_data.name = monter_name_get;
@@ -3032,15 +3543,40 @@ module.exports = {
             monter_data.location_image = monter_location_image;
             monter_data.drop = [
                 {
-                    name: monter_drop_name,
-                    type: monter_drop_type,
-                    image: monter_drop_image,
-                }
+                    name: monter_drop_name_0,
+                    type: monter_drop_type_0,
+                    rarity: monter_drop_rarity_0,
+                    image: monter_drop_image_0,
+                },
+                {
+                    name: monter_drop_name_1,
+                    type: monter_drop_type_1,
+                    rarity: monter_drop_rarity_1,
+                    image: monter_drop_image_1,
+                },
+                {
+                    name: monter_drop_name_2,
+                    type: monter_drop_type_2,
+                    rarity: monter_drop_rarity_2,
+                    image: monter_drop_image_2,
+                },
+                {
+                    name: monter_drop_name_3,
+                    type: monter_drop_type_3,
+                    rarity: monter_drop_rarity_3,
+                    image: monter_drop_image_3,
+                },
+                {
+                    name: monter_drop_name_4,
+                    type: monter_drop_type_4,
+                    rarity: monter_drop_rarity_4,
+                    image: monter_drop_image_4,
+                },
             ];
     
     
             await monter_data.save();
-
+            monter_drop_random.push(monter_data.drop)
              //ค่า defence ของชุดเกราะ จะเพิ่มเลือดให้ผู้ใส่ ปล ต้องปรับ % ของเลือดใหม่ด้วย
 
              if (cprofile.stamina > 100) 
@@ -3178,6 +3714,7 @@ module.exports = {
             if(menu.isButton()) {
                 if(menu.customId === "attack") {
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                     const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -4409,11 +4946,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -4433,17 +4966,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
+
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -4480,6 +5220,9 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
+                       
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -4601,7 +5344,6 @@ module.exports = {
                     
                         await interaction.editReply({ embeds: [embed], files: [], components: [row] , ephemeral: true });
                     } 
-
                 } else if (menu.customId === "run") {
                     await menu.deferUpdate();
                     const run = new EmbedBuilder()
@@ -4612,9 +5354,11 @@ module.exports = {
                     await monter_data.deleteOne();
                     cprofile.stamina = cprofile.stamina_max;
                     await cprofile.save();
+                    delete pendingEditHouseCommands[interaction.user.id];
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                       const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -5646,11 +6390,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -5670,18 +6410,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
 
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -5718,6 +6664,8 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -5952,14 +6900,16 @@ module.exports = {
         await interaction.editReply({ embeds: [embed], files: [], components: [row], ephemeral: true  });
         cprofile.stamina = cprofile.stamina_max;
         await cprofile.save();
+        delete pendingEditHouseCommands[interaction.user.id];
+        collector.stop();
             }
         });
         } else if(profile.location == "น้ำตกป่าสีเขียว") {
-            const name_monter = config.monter[0].greengreen_forest_waterfall_forest_plains.map(x => x.name);
+            const name_monter = config.monter[0].green_forest_waterfall.map(x => x.name);
         const random = Math.floor(Math.random() * name_monter.length);
         const monter_name = name_monter[random];
 
-        const monter = config.monter[0].green_forest_plains.find(x => x.name === monter_name);
+        const monter = config.monter[0].green_forest_waterfall.find(x => x.name === monter_name);
 
         const monter_name_get = monter.name;
         const monter_type = monter.type;
@@ -5972,9 +6922,26 @@ module.exports = {
         const monter_exp = monter.exp;
         const monter_location = monter.location;
         const monter_location_image = monter.location_image;
-        const monter_drop_name = monter.drop_name;
-        const monter_drop_type = monter.drop_type;
-        const monter_drop_image = monter.drop_image;
+        const monter_drop_name_0 = monter.drop_list[0].name;
+        const monter_drop_type_0 = monter.drop_list[0].type;
+        const monter_drop_rarity_0 = monter.drop_list[0].rarity;
+        const monter_drop_image_0 = monter.drop_list[0].image;
+        const monter_drop_name_1 = monter.drop_list[1].name;
+        const monter_drop_type_1 = monter.drop_list[1].type;
+        const monter_drop_rarity_1 = monter.drop_list[1].rarity;
+        const monter_drop_image_1 = monter.drop_list[1].image;
+        const monter_drop_name_2 = monter.drop_list[2].name;
+        const monter_drop_type_2 = monter.drop_list[2].type;
+        const monter_drop_rarity_2 = monter.drop_list[2].rarity;
+        const monter_drop_image_2 = monter.drop_list[2].image;
+        const monter_drop_name_3 = monter.drop_list[3].name;
+        const monter_drop_type_3 = monter.drop_list[3].type;
+        const monter_drop_rarity_3 = monter.drop_list[3].rarity;
+        const monter_drop_image_3 = monter.drop_list[3].image;
+        const monter_drop_name_4 = monter.drop_list[4].name;
+        const monter_drop_type_4 = monter.drop_list[4].type;
+        const monter_drop_rarity_4 = monter.drop_list[4].rarity;
+        const monter_drop_image_4 = monter.drop_list[4].image;
 
 
             monter_data.name = monter_name_get;
@@ -5990,15 +6957,40 @@ module.exports = {
             monter_data.location_image = monter_location_image;
             monter_data.drop = [
                 {
-                    name: monter_drop_name,
-                    type: monter_drop_type,
-                    image: monter_drop_image,
-                }
+                    name: monter_drop_name_0,
+                    type: monter_drop_type_0,
+                    rarity: monter_drop_rarity_0,
+                    image: monter_drop_image_0,
+                },
+                {
+                    name: monter_drop_name_1,
+                    type: monter_drop_type_1,
+                    rarity: monter_drop_rarity_1,
+                    image: monter_drop_image_1,
+                },
+                {
+                    name: monter_drop_name_2,
+                    type: monter_drop_type_2,
+                    rarity: monter_drop_rarity_2,
+                    image: monter_drop_image_2,
+                },
+                {
+                    name: monter_drop_name_3,
+                    type: monter_drop_type_3,
+                    rarity: monter_drop_rarity_3,
+                    image: monter_drop_image_3,
+                },
+                {
+                    name: monter_drop_name_4,
+                    type: monter_drop_type_4,
+                    rarity: monter_drop_rarity_4,
+                    image: monter_drop_image_4,
+                },
             ];
     
     
             await monter_data.save();
-
+            monter_drop_random.push(monter_data.drop)
              //ค่า defence ของชุดเกราะ จะเพิ่มเลือดให้ผู้ใส่ ปล ต้องปรับ % ของเลือดใหม่ด้วย
 
              if (cprofile.stamina > 100) 
@@ -6136,6 +7128,7 @@ module.exports = {
             if(menu.isButton()) {
                 if(menu.customId === "attack") {
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                     const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -7367,11 +8360,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -7391,17 +8380,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
+
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -7438,6 +8634,9 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
+                       
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -7559,7 +8758,6 @@ module.exports = {
                     
                         await interaction.editReply({ embeds: [embed], files: [], components: [row] , ephemeral: true });
                     } 
-
                 } else if (menu.customId === "run") {
                     await menu.deferUpdate();
                     const run = new EmbedBuilder()
@@ -7570,9 +8768,11 @@ module.exports = {
                     await monter_data.deleteOne();
                     cprofile.stamina = cprofile.stamina_max;
                     await cprofile.save();
+                    delete pendingEditHouseCommands[interaction.user.id];
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                       const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -8604,11 +9804,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -8628,18 +9824,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
 
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -8676,6 +10078,8 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -8910,6 +10314,8 @@ module.exports = {
         await interaction.editReply({ embeds: [embed], files: [], components: [row], ephemeral: true  });
         cprofile.stamina = cprofile.stamina_max;
         await cprofile.save();
+        delete pendingEditHouseCommands[interaction.user.id];
+        collector.stop();
             }
         });
         } else if(profile.location == "ป่าลึกสีเขียว") {
@@ -8917,7 +10323,7 @@ module.exports = {
         const random = Math.floor(Math.random() * name_monter.length);
         const monter_name = name_monter[random];
 
-        const monter = config.monter[0].green_forest_plains.find(x => x.name === monter_name);
+        const monter = config.monter[0].green_forest_depths.find(x => x.name === monter_name);
 
         const monter_name_get = monter.name;
         const monter_type = monter.type;
@@ -8930,9 +10336,26 @@ module.exports = {
         const monter_exp = monter.exp;
         const monter_location = monter.location;
         const monter_location_image = monter.location_image;
-        const monter_drop_name = monter.drop_name;
-        const monter_drop_type = monter.drop_type;
-        const monter_drop_image = monter.drop_image;
+        const monter_drop_name_0 = monter.drop_list[0].name;
+        const monter_drop_type_0 = monter.drop_list[0].type;
+        const monter_drop_rarity_0 = monter.drop_list[0].rarity;
+        const monter_drop_image_0 = monter.drop_list[0].image;
+        const monter_drop_name_1 = monter.drop_list[1].name;
+        const monter_drop_type_1 = monter.drop_list[1].type;
+        const monter_drop_rarity_1 = monter.drop_list[1].rarity;
+        const monter_drop_image_1 = monter.drop_list[1].image;
+        const monter_drop_name_2 = monter.drop_list[2].name;
+        const monter_drop_type_2 = monter.drop_list[2].type;
+        const monter_drop_rarity_2 = monter.drop_list[2].rarity;
+        const monter_drop_image_2 = monter.drop_list[2].image;
+        const monter_drop_name_3 = monter.drop_list[3].name;
+        const monter_drop_type_3 = monter.drop_list[3].type;
+        const monter_drop_rarity_3 = monter.drop_list[3].rarity;
+        const monter_drop_image_3 = monter.drop_list[3].image;
+        const monter_drop_name_4 = monter.drop_list[4].name;
+        const monter_drop_type_4 = monter.drop_list[4].type;
+        const monter_drop_rarity_4 = monter.drop_list[4].rarity;
+        const monter_drop_image_4 = monter.drop_list[4].image;
 
 
             monter_data.name = monter_name_get;
@@ -8948,15 +10371,40 @@ module.exports = {
             monter_data.location_image = monter_location_image;
             monter_data.drop = [
                 {
-                    name: monter_drop_name,
-                    type: monter_drop_type,
-                    image: monter_drop_image,
-                }
+                    name: monter_drop_name_0,
+                    type: monter_drop_type_0,
+                    rarity: monter_drop_rarity_0,
+                    image: monter_drop_image_0,
+                },
+                {
+                    name: monter_drop_name_1,
+                    type: monter_drop_type_1,
+                    rarity: monter_drop_rarity_1,
+                    image: monter_drop_image_1,
+                },
+                {
+                    name: monter_drop_name_2,
+                    type: monter_drop_type_2,
+                    rarity: monter_drop_rarity_2,
+                    image: monter_drop_image_2,
+                },
+                {
+                    name: monter_drop_name_3,
+                    type: monter_drop_type_3,
+                    rarity: monter_drop_rarity_3,
+                    image: monter_drop_image_3,
+                },
+                {
+                    name: monter_drop_name_4,
+                    type: monter_drop_type_4,
+                    rarity: monter_drop_rarity_4,
+                    image: monter_drop_image_4,
+                },
             ];
     
     
             await monter_data.save();
-
+            monter_drop_random.push(monter_data.drop)
              //ค่า defence ของชุดเกราะ จะเพิ่มเลือดให้ผู้ใส่ ปล ต้องปรับ % ของเลือดใหม่ด้วย
 
              if (cprofile.stamina > 100) 
@@ -9094,6 +10542,7 @@ module.exports = {
             if(menu.isButton()) {
                 if(menu.customId === "attack") {
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                     const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -10325,11 +11774,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -10349,17 +11794,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
+
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -10396,6 +12048,9 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
+                       
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -10517,7 +12172,6 @@ module.exports = {
                     
                         await interaction.editReply({ embeds: [embed], files: [], components: [row] , ephemeral: true });
                     } 
-
                 } else if (menu.customId === "run") {
                     await menu.deferUpdate();
                     const run = new EmbedBuilder()
@@ -10528,9 +12182,11 @@ module.exports = {
                     await monter_data.deleteOne();
                     cprofile.stamina = cprofile.stamina_max;
                     await cprofile.save();
+                    delete pendingEditHouseCommands[interaction.user.id];
                     collector.stop();
                 } else if (menu.customId === "defend"){
                     await menu.deferUpdate();
+                    pendingEditHouseCommands[interaction.user.id] = true;
                     const monter_data = await GMonter.findOne({ guild: interaction.guild.id, user: interaction.user.id });
                       const cprofile = await GProfile.findOne({ user: interaction.user.id });
 
@@ -11562,11 +13218,7 @@ module.exports = {
 
 
                     if (monter_data.health <= 0) {
-                        const win = new EmbedBuilder()
-                        .setColor("#bdc6e9")
-                        .setDescription(` \`\`\` - คุณชนะมอนเตอร์ \`\`\` `)
-
-                        interaction.editReply({ embeds: [win], files: [], components: []})
+                        const store = [];
 
                         //เพิ่ม exp
                         cprofile.exp = cprofile.exp + monter_data.exp;
@@ -11586,18 +13238,224 @@ module.exports = {
                             await cprofile.save();
                         }
                         //drop item
-                        inv.item.push({
-                            name: monter_data.drop[0].name,
-                            type: monter_data.drop[0].type,
-                            image: monter_data.drop[0].image,
-                            id: generateID,
-                        });
+                        
+
+                        // common
+                    const item_common = monter_data.drop.filter(x => x.rarity === "common")
+                    const item_common_random = item_common[Math.floor(Math.random() * item_common.length)];  
+                    
+                    // uncommon
+                    const item_uncommon = monter_data.drop.filter(x => x.rarity === "uncommon")
+                    const item_uncommon_random = item_uncommon[Math.floor(Math.random() * item_uncommon.length)];
+                    
+                    // rare
+                    const item_rare = monter_data.drop.filter(x => x.rarity === "rare")
+                    const item_rare_random = item_rare[Math.floor(Math.random() * item_rare.length)];
+
+                    // super rare
+                    const item_super_rare = monter_data.drop.filter(x => x.rarity === "super_rare")
+                    const item_super_rare_random = item_super_rare[Math.floor(Math.random() * item_super_rare.length)];
+
+                    // legendary
+                    const item_legendary = monter_data.drop.filter(x => x.rarity === "legendary")
+                    const item_legendary_random = item_legendary[Math.floor(Math.random() * item_legendary.length)];
+
+                        for (let i = 0; i < 1; i++) {
+                        const getNumber = roll()
+                        switch(getNumber[0]) {
+                            case 6:
+                                if(item_legendary_random){
+                                    store.push(`${item_legendary_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_legendary_random.name,
+                                        type: item_legendary_random.type,
+                                        rarity: item_legendary_random.rarity,
+                                        image: item_legendary_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 6 Star
+                                break;
+                            case 5:
+                                if (item_super_rare_random) {
+                                    store.push(`${item_super_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_super_rare_random.name,
+                                        type: item_super_rare_random.type,
+                                        rarity: item_super_rare_random.rarity,
+                                        image: item_super_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 5 Star
+                                break;
+                            case 4:
+                                if (item_rare_random) {
+                                    store.push(`${item_rare_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_rare_random.name,
+                                        type: item_rare_random.type,
+                                        rarity: item_rare_random.rarity,
+                                        image: item_rare_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 3:
+                                if (item_uncommon_random) {
+                                    store.push(`${item_uncommon_random.name}`);
+
+                                     inv.item.push({
+                                        name: item_uncommon_random.name,
+                                        type: item_uncommon_random.type,
+                                        rarity: item_uncommon_random.rarity,
+                                        image: item_uncommon_random.image,
+                                        id: generateID,
+                                    });
+                                } else if (item_common_random) {
+                                    store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                }
+                                // Add Ticket 4 Star
+                                break;
+                            case 2:
+                                store.push(`${item_common_random.name}`);
+
+                                    inv.item.push({
+                                        name: item_common_random.name,
+                                        type: item_common_random.type,
+                                        rarity: item_common_random.rarity,
+                                        image: item_common_random.image,
+                                        id: generateID,
+                                    });
+                                // Add Ticket 4 Star
+                                break;
+                            }
+                        }
+
+                        for (let i = 0; i < 1; i++) {
+                            const str = store.slice(i * 3, i * 3 + 3).join(""); // store.slice(i * 3, i * 3 + 3).join(""); 
+                    
+                    
+                    
+                            const confirm_s = new EmbedBuilder()
+                            .setColor("#bdc6e9")
+                            .setDescription(`you got ${str == "" ? " Nothing" : "" + str}!`)
+                                pages.push(confirm_s);
+                            }
+
+
+                           await interaction.editReply({ embeds: [pages[0]], files: [], components: [] })
+
 
                         cprofile.stamina = cprofile.stamina_max;
 
                         await inv.save();
                         await cprofile.save();
                         await monter_data.deleteOne();
+                        delete pendingEditHouseCommands[interaction.user.id];
+                        collector.stop();
                     } else if (cprofile.health <= 0) {
                         const row_lose = new ActionRowBuilder()
                         .addComponents(
@@ -11634,6 +13492,8 @@ module.exports = {
                        await interaction.editReply({ embeds: [lose], files: [], components: [row_lose], ephemeral: true })
                        cprofile.stamina = cprofile.stamina_max;
                        await cprofile.save();
+                       delete pendingEditHouseCommands[interaction.user.id];
+                       collector.stop();
                     } else {
 
                         const defence_armor = cprofile.type[0].armor_head.defense + cprofile.type[0].armor_body.defense +  cprofile.type[0].armor_leg.defense + cprofile.type[0].armor_foot.defense;
@@ -11868,6 +13728,8 @@ module.exports = {
         await interaction.editReply({ embeds: [embed], files: [], components: [row], ephemeral: true  });
         cprofile.stamina = cprofile.stamina_max;
         await cprofile.save();
+        delete pendingEditHouseCommands[interaction.user.id];
+        collector.stop();
             }
         });
         }
@@ -11882,3 +13744,24 @@ const crypto = require('crypto');
 function generateID() {
     return crypto.randomBytes(16).toString('base64');
 };
+
+
+function roll() {
+    const number = (Math.floor(Math.random() * 1000) + 1) * 0.1 // 0.1 - 100
+    if (number <= (1 + cprofile_function[0])) {
+    const random = Math.floor(Math.random() * monter_drop_random[0].length) // สุ่มตัวเลข 0 - จำนวนตัวที่มีใน array
+        return [6, random]
+    } else if(number <= (10 + cprofile_function[0])) {
+        const random = Math.floor(Math.random() * monter_drop_random[0].length)
+        return [5, random]
+    } else if(number <= (30 + cprofile_function[0])) {
+        const random = Math.floor(Math.random() * monter_drop_random[0].length)
+        return [4, random]
+    } else if(number <= (60 + cprofile_function[0])) {
+        const random = Math.floor(Math.random() * monter_drop_random[0].length)
+        return [3, random]
+    } else if(number <= (100 + cprofile_function[0])) {
+        const random = Math.floor(Math.random() * monter_drop_random[0].length)
+        return [2, random]
+    }
+}

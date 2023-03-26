@@ -30,6 +30,6 @@ process.on('unhandledRejection', error => console.log(error));
 process.on('uncaughtException', error => console.log(error));
 
 ["slash"].forEach(x => client[x] = new Collection());
-["loadCommand", "loadEvent", "loadDatabase", "PetEvents", "QuestEvents", "Market", "ProfileEvents", "HouseEvents", "HouseEvents_2",].forEach(x => require(`./handlers/${x}`)(client));
+["loadCommand", "loadEvent", "loadDatabase", "PetEvents", "QuestEvents", "Market", "ProfileEvents", "HouseEvents", "HouseEvents_2","DogPoopEvents"].forEach(x => require(`./handlers/${x}`)(client));
 
 client.login(client.token);

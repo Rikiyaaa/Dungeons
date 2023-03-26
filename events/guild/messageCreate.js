@@ -50,13 +50,15 @@ module.exports = async(client, message) => {
 
 });
 
-     const user = await GProfile.findOne({ user: message.author.id, guild: message.guild.id, });
+    const  user = await GProfile.findOne({ guild: message.guild.id, user: message.author.id }); 
 
      
 
     let talk_room = client.cache.get(message.guild.id);
     if (!talk_room) return;
      if (message.channel.id == talk_room) {
+        user.typeing = user.typeing += 1;
+        user.save();
         //ถ้า message.content มีคำวที่อยู่ใน bad_message ให้ลบ
         if (user.nickname_request1 == true) {
             bad_message.forEach((bad) => {
@@ -253,12 +255,12 @@ module.exports = async(client, message) => {
 } else {
     if (user.nickname_request1 == false){
         user.nickname_request1 = true;
+        user.save();
 
         let nickname_1 = new EmbedBuilder()
         .setDescription("เอะไม่เคยเจอหน้าเธอเลยแหะมาทำความรู้จักกันหน่อยเร็วงั้น!")
 
         message.channel.sendTyping().catch(() => { }).then(() => { message.reply({ embeds: [nickname_1] }).catch(() => { }); });
-        user.save();
     } 
 }
 

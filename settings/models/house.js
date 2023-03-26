@@ -4,6 +4,7 @@ const Create = Schema({
     guild: String,
     user: String,
     house: String,
+    house_poop: String,
     six_clock: Boolean,
     nineteen_clock: Boolean,
     /// Furniture

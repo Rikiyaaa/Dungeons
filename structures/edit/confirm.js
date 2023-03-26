@@ -1416,7 +1416,7 @@ const saveRA1 = async function (interaction, id,  message, check, item, pendingE
                 
                 
                 /// save link
-                home.house = message.attachments.first().url;
+                home.house = message.attachments.first().url; // attachments.first().url มาจาก 
                 home.save();
 
                 interaction.editReply({ content: "House has saved.", files: [], components: [] , ephemeral: true})

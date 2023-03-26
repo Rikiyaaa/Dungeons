@@ -1,6 +1,8 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, AttachmentBuilder, SelectMenuOptionBuilder } = require("discord.js");
 const GInv = require("../../settings/models/inventory.js");
 const { fruit_feed } = require("../../structures/feed/fruits.js");
+const { fish_feed } = require("../../structures/feed/fish.js");
+const { food_feed } = require("../../structures/feed/food.js");
 
 module.exports = {
     name: ["profile", "feed"], //fixing
@@ -34,6 +36,11 @@ module.exports = {
                             description: "Shop your wallpaper",
                             value: "fish"
                         },
+                        {
+                            label: "food",
+                            description: "Shop your floor",
+                            value: "food"
+                        }
                     ])
                     
                 ])
@@ -54,10 +61,14 @@ module.exports = {
                         fruit_feed(client, interaction, msg);
                         collector.stop();
                     } else if (directory === "fish") {
-
+                        fish_feed(client, interaction, msg);
                         //
                         collector.stop();
                     
+                    } else if (directory === "food") {
+                        food_feed(client, interaction, msg);
+
+                        collector.stop();
                     }
                     
                 }

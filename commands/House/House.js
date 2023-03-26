@@ -7,33 +7,83 @@ module.exports = {
     description: "Display my home.",
     category: "House",
     run: async (client, interaction) => {
-        await interaction.deferReply({ ephemeral: false });
 
-      const msg = await interaction.editReply({ content: `<a:907824800192397392:1022032199836512330> | กำลังโหลดข้อมูล...` });
+        await interaction.reply({ content: "Loading please wait...", components: [] });
 
-        const home = await GHome.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+        const homes = await GHome.find({guild: interaction.guild.id, user: interaction.user.id });
+        const dataObjects = ["A_DATA", "B_DATA", "C_DATA", "D_DATA"];
+        
+        const emptyObjs = [];
+        const housesWithNonEmptyObjs = [];
+        
+        if (homes?.length > 0) {
+          for (const home of homes) {
+            if (home && typeof home.house !== 'undefined') {
+              let hasNonEmptyObj = false;
+              for (const dataObj in dataObjects) {
+                if (typeof home[dataObjects[dataObj]] === "object" && home[dataObjects[dataObj]] !== null && !Array.isArray(home[dataObjects[dataObj]])) {
+                  for (const key in home[dataObjects[dataObj]]) {
+                    if (home[dataObjects[dataObj]].hasOwnProperty(key)) {
+                      const obj = home[dataObjects[dataObj]][key];
+                      if (obj === "dogpoop_dogpoop.png") {
+                        emptyObjs.push(key);
+                      } else if (obj !== "") {
+                        hasNonEmptyObj = true;
+                      }
+                    }
+                  }
+                }
+              }
+              if (hasNonEmptyObj) {
+                housesWithNonEmptyObjs.push(home);
+              }
+            }
+          }
+        }
+        
+        if (emptyObjs.length > 0) {
+            const canvas = Canvas.createCanvas(300, 300);
+            const ctx = canvas.getContext("2d");
+    
+            const background = await Canvas.loadImage(`${housesWithNonEmptyObjs[0].house_poop}`);
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    
+            const windows = await Canvas.loadImage("./assests/windows.png");
+            ctx.drawImage(windows, 0, 0, canvas.width, canvas.height);
+    
+            if (housesWithNonEmptyObjs[0].six_clock === true) {
+                const six_clock = await Canvas.loadImage("./assests/windows_mooning.png");
+                ctx.drawImage(six_clock, 0, 0, canvas.width, canvas.height);
+            } else if (housesWithNonEmptyObjs[0].nineteen_clock === true) {
+                const nineteen_clock = await Canvas.loadImage("./assests/windows_night.png");
+                ctx.drawImage(nineteen_clock, 0, 0, canvas.width, canvas.height);
+            } 
+    
+            const attachment = new AttachmentBuilder(await canvas.encode("png"), { name: `house.png` })
+    
+            return interaction.editReply({ content: `> Viewing Your House • [  ${interaction.user.username}#${interaction.user.discriminator} ]`, files: [attachment] });
+          } else if (emptyObjs.length === 0) {
+            const canvas = Canvas.createCanvas(300, 300);
+            const ctx = canvas.getContext("2d");
+    
+            const background = await Canvas.loadImage(`${housesWithNonEmptyObjs[0].house}`);
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    
+            const windows = await Canvas.loadImage("./assests/windows.png");
+            ctx.drawImage(windows, 0, 0, canvas.width, canvas.height);
+    
+            if (housesWithNonEmptyObjs[0].six_clock === true) {
+                const six_clock = await Canvas.loadImage("./assests/windows_mooning.png");
+                ctx.drawImage(six_clock, 0, 0, canvas.width, canvas.height);
+            } else if (housesWithNonEmptyObjs[0].nineteen_clock === true) {
+                const nineteen_clock = await Canvas.loadImage("./assests/windows_night.png");
+                ctx.drawImage(nineteen_clock, 0, 0, canvas.width, canvas.height);
+            } 
+    
+            const attachment = new AttachmentBuilder(await canvas.encode("png"), { name: `house.png` })
+    
+            return interaction.editReply({ content: `> Viewing Your House • [  ${interaction.user.username}#${interaction.user.discriminator} ]`, files: [attachment] });
 
-        const canvas = Canvas.createCanvas(300, 300);
-        const ctx = canvas.getContext("2d");
-
-        const home_img = home.house;
-
-        const background = await Canvas.loadImage(`${home_img}`);
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-        const windows = await Canvas.loadImage("./assests/windows.png");
-        ctx.drawImage(windows, 0, 0, canvas.width, canvas.height);
-
-        if (home.six_clock === true) {
-            const six_clock = await Canvas.loadImage("./assests/windows_mooning.png");
-            ctx.drawImage(six_clock, 0, 0, canvas.width, canvas.height);
-        } else if (home.nineteen_clock === true) {
-            const nineteen_clock = await Canvas.loadImage("./assests/windows_night.png");
-            ctx.drawImage(nineteen_clock, 0, 0, canvas.width, canvas.height);
-        } 
-
-        const attachment = new AttachmentBuilder(await canvas.encode("png"), { name: `house.png` })
-
-        return msg.edit({ content: `> Viewing Your House • [  ${interaction.user.username}#${interaction.user.discriminator} ]`, files: [attachment] });
+          }
     }
 }

@@ -218,7 +218,7 @@ module.exports = {
     rob_cooldown_time: 18000,
     rob_chance: 50,
 
-    fishs_cooldown_time: 120,
+    fishs_cooldown_time: 120, // 2 minutes
     fishs_chance: 50,
 
     coinflip_start: 100,
@@ -313,6 +313,39 @@ module.exports = {
         name: "Squishychub_plains",
         type: "common",
         level: 1,
+        drop_list: 
+          [
+            {
+            name:  "Squishychub Fur common",
+            type: "item",
+            rarity: "common",
+            image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/6/67/Squishychub_Fur.png/revision/latest?cb=20221204200108",
+          },
+          {
+            name:  "",
+            type: "",
+            rarity: "",
+            image: "",
+          },
+          {
+            name:  "Squishychub Fur rare",
+            type: "item",
+            rarity: "rare",
+            image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/6/67/Squishychub_Fur.png/revision/latest?cb=20221204200108",
+          },
+          {
+            name:  "",
+            type: "",
+            rarity: "",
+            image: "",
+          },
+          {
+            name:  "",
+            type: "",
+            rarity: "",
+            image: "",
+          },
+        ],
         image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/7/74/Squishychub_Sprite.png/revision/latest?cb=20230108142812",
         location: "Green Forest Plains",
         location_image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/f/f5/Plains_%28ecology_symbol%29.png/revision/latest/scale-to-width-down/40?cb=20221126204038",
@@ -321,25 +354,6 @@ module.exports = {
         health_emoji: "<:main1:1082296663604994068><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>",
         health_max: 100,
         exp: 10,
-        drop_name:  "Squishychub Fur",
-        drop_type: "item",
-        drop_image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/6/67/Squishychub_Fur.png/revision/latest?cb=20221204200108",
-      },
-      {
-        name: "Pumpkin Terrier_plains",
-        type: "rare",
-        level: 5,
-        image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/4/49/Pumpkin_Terrier_Sprite.png/revision/latest/scale-to-width-down/100?cb=20230108144544",
-        location: "Green Forest Plains",
-        location_image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/f/f5/Plains_%28ecology_symbol%29.png/revision/latest/scale-to-width-down/40?cb=20221126204038",
-        damage_attack: 15,
-        health: 120,
-        health_emoji: "<:main1:1082296663604994068><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>",
-        health_max: 120,
-        exp: 20,
-        drop_name: "Pumpkin Terrier Fur",
-        drop_type: "item",
-        drop_image: "https://static.wikia.nocookie.net/little_witch_in_the_woods/images/7/7a/Pumpkin_Terrier_Fur.png/revision/latest/scale-to-width-down/30?cb=20221204200244",
       },
     ],
     green_forest_plateau: [

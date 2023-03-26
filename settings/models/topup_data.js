@@ -1,10 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const Topup_data =  Schema({
-    User_id: String,
+    guild : String,
+    user: String,
     Username: String,
-    เติมเงินไปทั้งหมด: Number,
-    รายการเติมเงิน: Array,
+    all: Number,
+    list: Array,
 });
 
 module.exports = model("Topup", Topup_data);

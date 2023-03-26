@@ -23,8 +23,8 @@ module.exports = async(client, interaction) => {
   if (interaction.isCommand || interaction.isContextMenuCommand || interaction.isModalSubmit || interaction.isChatInputCommand) {
       if (!interaction.guild) return;
 
-      await client.createHome(interaction.guild.id, interaction.user.id);
-      await client.createProfile(interaction.guild.id, interaction.user.id);
+      await client.createHome(interaction.guild.id, interaction.user.id, interaction.user.username, interaction.user.discriminator);
+      await client.createProfile(interaction.guild.id, interaction.user.id, interaction.user.username, interaction.user.discriminator);
       await client.createInv(interaction.guild.id, interaction.user.id);
       
      if (interaction.isModalSubmit) {
@@ -32,16 +32,16 @@ module.exports = async(client, interaction) => {
         const code = interaction.fields.getTextInputValue("topup_code");
         voucher("0957121967", code).then(redeem => {
 
-          const topup = Topup_data.findOne({ guild: interaction.guild.id, user: interaction.user.id, username: interaction.user.username, discriminator: interaction.user.discriminator});
+          const topup = Topup_data.findOne({ guild: interaction.guild.id, user: interaction.user.id, Username: interaction.user.username, discriminator: interaction.user.discriminator});
 
-          topup.รายการเติมเงิน.push({
+          topup.list.push({
             code: redeem.code,
             owner_full_name: redeem.owner_full_name,
             amount: redeem.amount,
             date: new Date()
           });
 
-          topup.รายการเติมเงินทั้งหมด += redeem.amount;
+          topup.all += redeem.amount;
 
           topup.save();
 

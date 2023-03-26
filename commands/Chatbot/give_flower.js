@@ -3,7 +3,7 @@ const GInv = require("../../settings/models/inventory.js");
 const Member = require("../../settings/models/profile.js");
 
 module.exports = {
-    name: ["ให้ดอกไม้"], //fixing
+    name: ["flower"], //fixing
     description: "ให้ดอกไม้กิดกอน ",
     category: "Profile",
     run: async (client, interaction) => {

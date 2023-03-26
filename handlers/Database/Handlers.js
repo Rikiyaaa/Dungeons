@@ -24,6 +24,7 @@ module.exports = async (client) => {
                 guild: guildId,
                 user: userId,
                 house: "https://cdn.discordapp.com/attachments/1021744464550703195/1086654286823436469/qJCkFHv.png",
+                house_poop: "https://cdn.discordapp.com/attachments/1021744464550703195/1086654286823436469/qJCkFHv.png",
                 six_clock: true,
                 nineteen_clock: false,
                 A_DATA: {
@@ -345,7 +346,7 @@ module.exports = async (client) => {
             if (!cradprofile) {
             const newCradProfile = await CradProfile.create({
                 user: userId,
-                username: `Avatar's Avatar` ,
+                username: `${username}'s Avatar` ,
                 type: [
                     {
                         type: "Human",
@@ -485,16 +486,40 @@ module.exports = async (client) => {
     }
 
     const topup_data = await Topup.findOne({ guild: guildId, user: userId,});
-            if (!topup_data) {
-            const newtopup_data = await Topup.create({
-                User_id: userId,
-                Username: username + "#" + discriminator,
-                เติมเงินไปทั้งหมด: 0,
-                รายการเติมเงิน: [],
-        });
-            await newtopup_data.save();
-    }
+    if (!topup_data) {
+    const newtopup_data = await Topup.create({
+        guild: guildId,
+        user: userId,
+        Username: `${username}#${discriminator}`,
+        all: 0,
+        list: [],
+});
+    await newtopup_data.save();
+}                
+const pet_data = await GPet.findOne({ guild: guildId, user: userId,});
+const array_pet = ["dog", "cat"]
+const random_pet = array_pet[Math.floor(Math.random() * array_pet.length)];
 
+const array_pet_Big = ["Dog", "Cat"]
+const random_pet_Big = array_pet[Math.floor(Math.random() * array_pet_Big.length)];
+
+if (!pet_data) {
+const newpet_data = await GPet.create({
+    guild: guildId,
+    user: userId,
+    username: `${username}'s Pet`,
+    type: `${random_pet}`,
+    name: `${random_pet_Big}`,
+    price: 10000,
+    level: 1,
+    exp: 0,
+    nextexp: 100,
+    health: 20,
+    hungry: 20
+
+});
+await newpet_data.save();
+}
 
 };
 
@@ -549,12 +574,13 @@ module.exports = async (client) => {
         }
     };
 
-    client.createProfile = async function (guildId, userId) {
-        const database = await Member.findOne({ guild: guildId, user: userId });
+    client.createProfile = async function (guildId, userId, username, discriminator) {
+        const database = await Member.findOne({ guild: guildId, user: userId, username: username, discriminator: discriminator });
         if (!database) {
             const newHome = await Member.create({
                 guild: guildId,
                 user: userId,
+                username: `${username}#${discriminator}`,
                 status: "ปกติ",
                 location: "ที่ราบป่าสีเขียว",
                 nickname_request1: false,
@@ -564,6 +590,19 @@ module.exports = async (client) => {
                 flower_max: 100,
                 relationship: "คนเเปลกหน้า",
                 level: 1,
+                fishhook: [
+                    {
+                            name: "ไม่มี",
+                            emoji: "✊",
+                            status: "default",
+                            type: "hook_default",
+                            durability: 0,
+                            durability_max: 0,
+                            emoji_durability: "<:main1:1082296663604994068><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>",
+                            speed: 0,
+                            level: 0,
+                        },
+                ],
                 inventory: 200,
                 fishinventory: 2,
                 fishinventory: 10,
@@ -629,6 +668,8 @@ module.exports = async (client) => {
                 twitter: "",
                 battled_win: 0,
                 battled_lose: 0,
+                typeing: 0,
+                fishing: 0,
             });
             await newHome.save();
         }

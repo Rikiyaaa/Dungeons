@@ -2,12 +2,14 @@ const Member = require("../../settings/models/profile.js");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const config = require("../../settings/defaults.js");
 const FishInv = require("../../settings/models/fishinventory.js");
+const moment = require('moment');
 
 module.exports = { 
     name: ["ตกปลา"],
     description: "ตกปลาเพื่อหาเงิน",
     run: async (client, interaction) => {
-        await interaction.deferReply({ ephemeral: false });
+
+        const user = await Member.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
         const fish = config.fishs.map(x => x.name);
         const random = Math.floor(Math.random() * fish.length);
@@ -27,16 +29,24 @@ module.exports = {
                 .setColor("#bdc6e9")
                 .setTitle("กำลังตกปลา | กรุณารอสักครู่... ")
 
-        const msg = await interaction.editReply({ embeds: [waitembed] });
+        await interaction.reply({ embeds: [waitembed] });
 
-        
+        if(user.fishhook[0].name === "ไม่มี") {
+            const embed_no_hook = new EmbedBuilder()
+            .setColor("#bdc6e9")
+            .setDescription(`<a:971824666673020990:1022032761936166942> | คุณไม่มีเบ็ดตกปลา`)
+            return interaction.editReply({ embeds: [embed_no_hook], ephemeral : true });
+        }
 
-        // Randomize all fish names in the config file and get the random fish name from the array of fish names in the config file
+        if(user.fishhook[0].durability == 0) {
+            const durability_low = new EmbedBuilder()
+            .setColor("#bdc6e9")
+            .setDescription(`เบ็ดตกปลาของคุณเสื่อมสภาพแล้ว กรุณาซื้อเบ็ดใหม่`)
+            menu.followUp({ embeds: [durability_low], ephemeral: true })
 
+        }
 
-        const user = await Member.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-
-        if (user && user.fishs) {
+        if (user && user.fishhook[0].name !== "ไม่มี") {
             const cooldown = new Date(user.fishs_cooldown);
             const time = new Date(cooldown - new Date());
             const time_format = `${time.getUTCHours()} ชั่วโมง, ${time.getUTCMinutes()} นาที, ${time.getUTCSeconds()} วิ`;
@@ -44,14 +54,14 @@ module.exports = {
             if(user.fishs_cooldown > Date.now()) {
                 const embed_cooldown = new EmbedBuilder()
                 .setColor("#bdc6e9")
-                .setDescription(`<a:971824666673020990:1022032761936166942> | รอคูลดาวน์ไอสัส \`${time_format}\``)
+                .setDescription(`<a:971824666673020990:1022032761936166942> | รอคูลดาวน์ไอสัส ${time_format}`)
 
-            return msg.edit({ embeds: [embed_cooldown], ephemeral : true });
+            return interaction.editReply({ embeds: [embed_cooldown], ephemeral : true });
             }
 
 /// + New Cooldown 
 
-        user.fishs_cooldown = Date.now() + (user.fishs_cooldown_time * 1);
+         user.fishs_cooldown = Date.now() + (user.fishhook[0].speed * 1000); // 2 minutes
         const wait = require('node:timers/promises').setTimeout;
 
         
@@ -68,7 +78,7 @@ module.exports = {
                 .setDescription(` \`\`\` - ขายได้เงิน: \`$${numberWithCommas(amount)}\` \`\`\`
                 `)
                 .setFooter({ text: `© Kitsakorn | Version Beta`})
-            return msg.edit({ embeds: [embed] });
+            return interaction.editReply({ embeds: [embed] });
             });
         } else {
          //   const formatBoost = amount * user.fishs_multiple; // Get boost amount
@@ -99,10 +109,56 @@ module.exports = {
 
     collector.on('collect', async (menu) => {
         if(menu.isButton()) {
+            profile.fishing = profile.fishing += 1;
+            profile.fishhook[0].durability -= 2;
+            profile.fishhook[0].durability_max -= 2;
+
+            const stamina_inter = profile.fishhook[0].durability;
+            const stamina_max_inter = profile.fishhook[0].durability_max + stamina_inter ;
+             const chack_stamina_inter = (stamina_inter  / stamina_max_inter) * 100;
+             const result_stamina_inter = Math.round(chack_stamina_inter);
+             if(result_stamina_inter <= 0) {
+                profile.fishhook[0].emoji_durability = "<:main1:1082296663604994068><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 10 && result_stamina_inter > 0) {
+             profile.fishhook[0].emoji_durability = "<:1068212769968631898:1082296591173550170><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 20) {
+             profile.fishhook[0].emoji_durability = "<:1068212772954964070:1082296594923257966><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 30) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 40) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212777623228516:1082296600585588776><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 50) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 60) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212777623228516:1082296600585588776><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 70) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:main2:1082296667639910432><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 80) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212777623228516:1082296600585588776><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 90) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:main3:1082296671297355847>";
+            } else if(result_stamina_inter <= 100) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212789023363163:1082296608823185518>";
+            }  else if(result_stamina_inter > 100) {
+             profile.fishhook[0].emoji_durability = "<:1068212774376849448:1082296596898791464><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212782639628308:1082296604448542801><:1068212789023363163:1082296608823185518>";
+              }
+    
+            await profile.save();
             await menu.deferUpdate();
             if(menu.customId === "sell") {
+                if(profile.fishhook[0].durability == 4) {
+                    const durability_low = new EmbedBuilder()
+                    .setColor("#bdc6e9")
+                    .setDescription(`ดูเหมือนว่าเบ็ดตกปลาของคุณใกล้เสื่อมสภาพแล้ว`)
+                    menu.followUp({ embeds: [durability_low], ephemeral: true })
+                } else if (profile.fishhook[0].durability == 2) {
+                    const durability_low = new EmbedBuilder()
+                    .setColor("#bdc6e9")
+                    .setDescription(`เบ็ดตกปลาของคุณใช้ได้อีกครั้งเดียว`)
+                    menu.followUp({ embeds: [durability_low], ephemeral: true })
+                }
 
-                //If the button is pressed, set setDisabled to true.
+
 
             profile.money += amount;
 
@@ -120,14 +176,25 @@ module.exports = {
 
 
             } else if (menu.customId === "keep") {
-                
                 const keep_mix = new EmbedBuilder()
                 .setColor("#bdc6e9")
                 .setDescription(`กระเป๋าของคุณเต็มแล้ว`)
 
                 if (fishInv.item.length > profile.fishinventory) 
-                // You backpack is max
                 return menu.followUp({ embeds: [keep_mix], ephemeral: true })
+
+                if(profile.fishhook[0].durability == 4) {
+                    const durability_low = new EmbedBuilder()
+                    .setColor("#bdc6e9")
+                    .setDescription(`ดูเหมือนว่าเบ็ดตกปลาของคุณใกล้เสื่อมสภาพแล้ว`)
+                    menu.followUp({ embeds: [durability_low], ephemeral: true })
+                } else if (profile.fishhook[0].durability == 2) {
+                    const durability_low = new EmbedBuilder()
+                    .setColor("#bdc6e9")
+                    .setDescription(`เบ็ดตกปลาของคุณใช้ได้อีกครั้งเดียว`)
+                    menu.followUp({ embeds: [durability_low], ephemeral: true })
+                }
+
 
                 fishInv.item.push({
                     name: fish_get,
@@ -165,9 +232,9 @@ module.exports = {
             .setDescription(` \`\`\` - ปลาหนีไปเเล้ว \` \`\`\`
             `)
 
-            msg.edit({ embeds: [time], files: [], components: []})
+            interaction.editReply({ embeds: [time], files: [], components: []})
             await wait(8000);
-            msg.delete();
+            interaction.deleteReply();
         }
     });
 
@@ -179,18 +246,10 @@ module.exports = {
                 .setTitle("🏝️ | บ่อตกปลาหลังบ้าน")
                 .setDescription(` <:820015313558700034:1022032835818815509> ${interaction.user} ได้รับ : \n ${emoji} ${fish_get} \n+ ขายได้เงิน: \` ${numberWithCommas(amount)} บาท \` <a:844525261973618698:1022032206480277574>`)
                 .setFooter({ text: `© Kitsakorn | Version Beta`})
-                await msg.edit({ embeds: [embed], components: [button]});
+                await interaction.editReply({ embeds: [embed], components: [button]});
             });
         }
-    } else {
-        const embed = new EmbedBuilder()
-            .setColor("#bdc6e9")
-            .setDescription(`<a:907824800192397392:1022032199836512330> | คุณไม่สามารถตกปลาได้ \nเนื่องจาก: ไม่มีเบ็ดตกปลา  \` พิมพ์ /รายการสินค้า \``)
-            
-
-            msg.edit({ embeds: [embed] });
-        return;
-    }
+    } 
 }
 }
 

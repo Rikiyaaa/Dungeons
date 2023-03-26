@@ -1,83 +1,75 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, AttachmentBuilder, SelectMenuOptionBuilder} = require("discord.js");
-const GPet = require("../../settings/models/pet.js");
-const Member = require("../../settings/models/profile.js");
-const GInv = require("../../settings/models/inventory.js");
 const Canvas = require("@napi-rs/canvas");
-const { pet } = require("../../settings/pet.js");
+const GProfile = require("../../settings/models/profile.js");
+const FishInv = require("../../settings/models/fishinventory.js");
+const { fishhook } = require("../../settings/fishhook_item.js");
 
-module.exports = {
-    name: ["pet", "shop"],
-    description: "Shop your pet.",
-    category: "Pet",
-    run: async (client, interaction) => {
-        await interaction.deferReply({ ephemeral: false });
-        const msg = await interaction.editReply("Loading please wait...");
+const shopfishhook = async (client, interaction, item) => {
+    if (!interaction && !interaction.channel) throw new Error('Channel is inaccessible.');
 
-        const pets = await GPet.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-        if(pets) return msg.edit("You already have a pet!");
-
-        const object = Object.values(pet);
+        //this returns the values
+        const object = Object.values(fishhook);
 
         const row = new ActionRowBuilder()
         .addComponents([
             new StringSelectMenuBuilder()
-                .setCustomId("shop_pets")
-                .setPlaceholder(`Please selection pet to buy.`)
+                .setCustomId("shop_fishhook")
+                .setPlaceholder(`Please selection item to buy.`)
                 .setMaxValues(1)
                 .setMinValues(1)
                 /// Map the categories to the select menu
                 .setOptions(object.map(key => {
                     return new SelectMenuOptionBuilder()
                         .setLabel(`${toOppositeCase(key.name)} | Cost: ${Commas(key.price)} (Lvl.${key.level})`)
-                        .setValue(key.type)
+                        .setValue(key.name)
                     }
                 ))
             ])
 
-
-        const profile = await Member.findOne({ guild: interaction.guild.id, user: interaction.user.id });
-        const inv = await GInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+        const profile = await GProfile.findOne({ guild: interaction.guild.id, user: interaction.user.id });
+        const fishinv = await FishInv.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
         const canvas = Canvas.createCanvas(450, 300);
         const ctx = canvas.getContext("2d");
 
-        const shop = await Canvas.loadImage("./assests/shop/select.png");
+        const shop = await Canvas.loadImage("./assests/shop/four.png");
         ctx.drawImage(shop, 0, 0, canvas.width, canvas.height);
 
-        const attc = new AttachmentBuilder(await canvas.encode("png"), { name: `select.png` })
+        const attc = new AttachmentBuilder(await canvas.encode("png"), { name: `four.png` })
 
         const embed = new EmbedBuilder()
-            .setImage("attachment://select.png")
+            .setImage("attachment://four.png")
             .setColor(client.color)
 
-        await msg.edit({ content: " ", embeds: [embed], components: [row], files: [attc] });
+        await interaction.editReply({ content: " ", embeds: [embed], components: [row], files: [attc] });
 
         let filter = (m) => m.user.id === interaction.user.id;
-        let collector = await msg.createMessageComponentCollector({ filter, time: 300000 }); // 5 minute
+        let collector = await interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
 
         collector.on('collect', async (menu) => {
-            if(menu.isStringSelectMenu()) {
-                if(menu.customId === "shop_pets") {
+            if(menu.isSelectMenu()) {
+                if(menu.customId === "shop_fishhook") {
                     await menu.deferUpdate();
-                    /// value id
                     let [ directory ] = menu.values;
 
-                    const item = pet.find(x => x.type === directory);
+                    const item = fishhook.find(x => x.name === directory);
 
                     if (profile.money < item.price) return menu.followUp({ content: "You not have money to buy this. Price: " + item.price });
                     if (profile.level < item.level) return menu.followUp({ content: "Requirement Level: " + item.level });
+                   
 
                     profile.money -= item.price;
 
-                    pets = {
-                        type: item.type,
+                    profile.fishhook[0] = {
                         name: item.name,
-                        price: item.price,
+                        emoji: item.emoji,
+                        status: item.status,
+                        type: item.type,
+                        durability: item.durability,
+                        durability_max: item.durability_max,
+                        emoji_durability: "<:main1:1082296663604994068><:main2:1082296667639910432><:main2:1082296667639910432><:main2:1082296667639910432><:main3:1082296671297355847>",
+                        speed: item.speed,
                         level: item.level,
-                        exp: item.exp,
-                        nextexp: item.nextexp,
-                        health: item.health,
-                        hungry: item.hungry,
                     }
 
                     const embed = new EmbedBuilder()
@@ -85,10 +77,8 @@ module.exports = {
                         .setColor(client.color)
 
                     await profile.save();
-                    await inv.save();
-                    await petnew.save();
 
-                    msg.edit({ embeds: [embed], components: [], files: [] });
+                    await menu.followUp({ embeds: [embed], components: [], files: [] });
                 }
             }
         });
@@ -102,7 +92,7 @@ module.exports = {
                 msg.edit({ embeds: [timed], components: [], files: [] });
             }
         });
-    }
+   return;
 }
 
 function Commas(x) {
@@ -117,3 +107,5 @@ const crypto = require('crypto');
 function generateID() {
     return crypto.randomBytes(16).toString('base64');
 };
+
+module.exports = { shopfishhook };

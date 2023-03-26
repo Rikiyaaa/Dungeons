@@ -107,11 +107,13 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.RA1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.RA1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -144,11 +146,13 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_ratwo") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.A_DATA.RA2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.A_DATA.RA2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -179,11 +183,13 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rathree") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.RA3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.RA3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -215,11 +221,13 @@ const editFurnitureAR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rafour") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.RA4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.RA4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.LA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -376,11 +384,13 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.RB1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.RB1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -412,11 +422,13 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rbtwo") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.RB2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.RB2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -447,11 +459,13 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rbthree") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.RB3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.RB3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -483,11 +497,13 @@ const editFurnitureBR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rbfour") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.RB4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.RB4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -643,11 +659,13 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                          if (home.C_DATA.RC1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                          if (home.C_DATA.RC1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -679,11 +697,13 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rctwo") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.C_DATA.RC2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.R2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.C_DATA.RC2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -715,11 +735,13 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rcthree") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.RC3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.RC3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -751,11 +773,13 @@ const editFurnitureCR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rcfour") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.RC4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.RC4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -911,9 +935,11 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.D_DATA.RD1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.D_DATA.RD1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -937,9 +963,11 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rdtwo") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.D_DATA.RD2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.D_DATA.RD2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -963,9 +991,11 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rdthree") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.D_DATA.RD3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.D_DATA.RD3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -989,9 +1019,11 @@ const editFurnitureDR = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_rdfour") {
                     const check = hinv.furniture_right.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.D_DATA.RD4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.D_DATA.RD4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1138,11 +1170,13 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                         if (home.A_DATA.LA1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                         if (home.A_DATA.LA1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1175,11 +1209,13 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_latwo") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.LA2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.LA2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1210,11 +1246,13 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lathree") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.LA3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.RA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.LA3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1246,9 +1284,11 @@ const editFurnitureAL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lafour") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.A_DATA.LA4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.A_DATA.LA4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.A_DATA.RA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.A_DATA.LA4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1397,11 +1437,13 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.LB1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.LB1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1433,11 +1475,13 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lbtwo") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.LB2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.LB2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1468,11 +1512,13 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lbthree") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.LB3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.LB3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1504,9 +1550,11 @@ const editFurnitureBL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lbfour") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.B_DATA.LB4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.B_DATA.LB4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.B_DATA.RB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.B_DATA.LB4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1654,11 +1702,13 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.LC1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.LC1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1690,11 +1740,13 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lctwo") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.LC2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.LC2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1726,11 +1778,13 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lcthree") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.LC3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.LC3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1762,9 +1816,11 @@ const editFurnitureCL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_lcfour") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.C_DATA.LC4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.C_DATA.LC4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.C_DATA.RC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.C_DATA.LC4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1912,11 +1968,13 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                     /// checking position
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.D_DATA.LD1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.D_DATA.LD1I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD1 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1947,11 +2005,13 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_ldtwo") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.D_DATA.LD2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.D_DATA.LD2I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD2 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -1981,11 +2041,13 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_ldthree") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.D_DATA.LD3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.D_DATA.LD3I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD3 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }
@@ -2017,9 +2079,11 @@ const editFurnitureDL = async function (client, interaction,  item, type, id, si
                 } else if (directory === "place_ldfour") {
                     const check = hinv.furniture_left.find(x => x.id === id);
                     if(check.area === 2) {
+                        if (home.D_DATA.LD4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     } else {
+                        if (home.D_DATA.LD4I === "dogpoop_dogpoop.png") return menu.followUp({ content: "พื้นที่ตรงนี้มีขี้สัตว์เลี้ยงของคุณอยู่", ephemeral: true });
                         if (home.D_DATA.RD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                         if (home.D_DATA.LD4 === true) return menu.followUp({ content: "You can't place this position.", ephemeral: true });
                     }

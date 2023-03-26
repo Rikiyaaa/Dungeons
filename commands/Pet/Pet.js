@@ -7,7 +7,7 @@ module.exports = {
     description: "Display your pet.",
     category: "Pet",
     run: async (client, interaction) => {
-        await interaction.deferReply({ ephemeral: false });
+        await interaction.reply({ content: "Loading please wait...", components: [], files: [] });
 
         const pet = await GPet.findOne({ guild: interaction.guild.id, user: interaction.user.id });
         if(!pet) return interaction.editReply("You don't have a pet yet.");
@@ -59,7 +59,7 @@ module.exports = {
         const attac = new AttachmentBuilder(await canvas.encode("png"), { name: "profile.png" })
 
         const embed = new EmbedBuilder()
-            .setAuthor({ name: `${interaction.user.username}'s Pet`, iconURL: interaction.user.avatarURL() })
+            .setAuthor({ name: `${pet.username}`, iconURL: interaction.user.avatarURL() })
             .addFields(
                 {
                     name: "Pet Health", value: `${pet.health}/20`, inline: true
@@ -77,6 +77,6 @@ module.exports = {
             .setImage("attachment://profile.png")
             .setColor(client.color)
 
-        return msg.edit({ content: " ", embeds: [embed], files: [attac] });
+        return interaction.editReply({ content: " ", embeds: [embed], files: [attac] });
     }
 }

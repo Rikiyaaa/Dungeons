@@ -10,7 +10,7 @@ const pendingCapsuleCommands = {};
  const item_random_select = []; 
 
 module.exports = { 
-    name: ["capsules"],
+    name: ["gacha"],
     description: "Gacha with your luck.",
     run: async (client, interaction) => {
 
@@ -261,7 +261,6 @@ module.exports = {
     
                    // inv.item.splice(inv.item.findIndex(x => x.id === directory), 1);
                    // await inv.save();
-    
                     await interaction.editReply({ content: `Confirming usage of ${(item.name)} • [ ${interaction.user.username}#${interaction.user.discriminator} ] `, embeds: [embed], components: [confirm_cancel] });
                     // add pendingCapsuleCommands to user
                     pendingCapsuleCommands[interaction.user.id] = true;

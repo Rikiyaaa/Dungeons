@@ -13,6 +13,7 @@ const profile = Schema({
   relationship: String,
   level: Number,
   money: Number,
+  fishhook: Array,
   inventory: {
       type: Number,
       default: 100
@@ -39,6 +40,7 @@ iteminventory: {
   work_cooldown: Number,
   work_multiple: Number, // all number 
   bank: Number,
+  moneyAndBank: Number,
   rob: Boolean, // false, true
   rob_cooldown: Number,
   rob_cooldown_time: Number,
@@ -66,6 +68,10 @@ iteminventory: {
   facebook: String,
   instagram: String,
   twitter: String,
+  battled_win: Number,
+  battled_lose: Number,
+  typeing: Number,
+  fishing: Number,
 });
 
 module.exports = model('Member', profile);

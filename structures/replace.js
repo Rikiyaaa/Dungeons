@@ -71,7 +71,7 @@ const replaceHouse = async function (client, interaction, ctx, home, check) {
     if (home.A_DATA.RA4I) {
         const a4 = await Canvas.loadImage(`./assests/furniture/${home.A_DATA.RA4I}_left.png`);
         ctx.drawImage(a4, 119, 24, 121, 175);
-    }
+    } 
     if (home.A_DATA.LA4I) {
         const a4 = await Canvas.loadImage(`./assests/furniture/${home.A_DATA.LA4I}_right.png`);
         ctx.drawImage(a4, 119, 24, 121, 175);

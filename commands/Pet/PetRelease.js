@@ -15,6 +15,8 @@ module.exports = {
 
         const pets = await GPet.findOne({ guild: interaction.guild.id, user: interaction.user.id });
 
+        if(!pets) return msg.edit({ content: "You don't have a pet yet." });
+
         await pets.delete();
 
         return msg.edit({ content: "Your are release the pet." });

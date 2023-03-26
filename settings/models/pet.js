@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const pet = Schema({
     guild: String,
     user: String,
+    username: String,
     name: String,
     type: String,
     id: String,
